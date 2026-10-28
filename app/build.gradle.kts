@@ -1,3 +1,4 @@
+import com.android.build.api.variant.impl.VariantOutputImpl
 import java.util.Properties
 
 plugins {
@@ -27,6 +28,11 @@ android {
         // Both live in gradle/libs.versions.toml; versionCode is YYYYMMDDNN.
         versionCode = libs.versions.versionCode.get().toInt()
         versionName = libs.versions.versionName.get()
+
+        // Modern 64-bit ARM phones only: one APK, one copy of the native Python/FFmpeg (~61 MB).
+        ndk {
+            abiFilters += "arm64-v8a"
+        }
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -66,13 +72,17 @@ android {
     packaging {
         jniLibs.useLegacyPackaging = true
     }
-    // One APK per ABI so each carries a single native Python + ffmpeg.
-    splits {
-        abi {
-            isEnable = true
-            reset()
-            include("arm64-v8a", "armeabi-v7a", "x86_64")
-            isUniversalApk = false
+}
+
+// APK names: <name>_<dev|pro>_<versionName>_<versionCode>.apk, e.g. Multi-Downloader_pro_1.0.0_2026102801.apk.
+// AGP 9 has no public API for this; VariantOutputImpl.outputFileName is the supported-in-practice hook.
+androidComponents {
+    onVariants { variant ->
+        val stage = if (variant.buildType == "release") "pro" else "dev"
+        variant.outputs.forEach { output ->
+            (output as? VariantOutputImpl)?.outputFileName?.set(
+                output.versionName.zip(output.versionCode) { name, code -> "Multi-Downloader_${stage}_${name}_$code.apk" }
+            )
         }
     }
 }

@@ -20,3 +20,7 @@ local.properties
 # Personal Android Studio state (device list sorting, last-selected run target)
 /.idea/deviceManager.xml
 /.idea/deploymentTargetSelector.xml
+
+# Built apps never belong in the repo
+*.apk
+*.aab

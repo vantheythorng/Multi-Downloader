@@ -29,21 +29,21 @@ Other sites are passed to yt-dlp too, flagged as "may fail". TikTok photo posts 
 
 ## Install
 
-Requires **Android 10 or newer** (arm64-v8a, armeabi-v7a or x86_64).
+Requires **Android 10 or newer** on a 64-bit ARM phone (arm64-v8a), which covers practically every phone from the last several years.
 
-Download the APK for your phone's ABI from [Releases](https://github.com/vantheythorng/Multi-Downloader/releases) (most phones: `arm64-v8a`). The app is not on Google Play, whose policy doesn't allow YouTube downloaders.
+Download the APK from [Releases](https://github.com/vantheythorng/Multi-Downloader/releases). The app is not on Google Play, whose policy doesn't allow YouTube downloaders.
 
 ## Build
 
 Requirements: Android Studio with JDK 21, Android SDK platform 37. Gradle 9.4.1 and AGP 9.2.1 come with the wrapper.
 
 ```sh
-./gradlew :app:assembleDebug        # app/build/outputs/apk/debug/app-<abi>-debug.apk
+./gradlew :app:assembleDebug        # app/build/outputs/apk/debug/Multi-Downloader_dev_<versionName>_<versionCode>.apk
 ./gradlew :app:testDebugUnitTest    # unit tests
 ./gradlew :app:lintDebug
 ```
 
-Builds are split per ABI, so each APK carries a single copy of the native Python and FFmpeg.
+Builds target arm64-v8a only, so the APK carries a single copy of the native Python and FFmpeg. APKs are named `Multi-Downloader_<dev|pro>_<versionName>_<versionCode>.apk` (debug = `dev`, release = `pro`); the version comes from `gradle/libs.versions.toml`.
 
 ### Release signing
 
@@ -64,7 +64,7 @@ keyPassword=…
 
 ```sh
 ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest
-adb install -r app/build/outputs/apk/debug/app-arm64-v8a-debug.apk
+adb install -r app/build/outputs/apk/debug/Multi-Downloader_dev_*.apk
 adb install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 adb shell am instrument -w com.kwan.multidownloader.test/androidx.test.runner.AndroidJUnitRunner
 adb uninstall com.kwan.multidownloader.test

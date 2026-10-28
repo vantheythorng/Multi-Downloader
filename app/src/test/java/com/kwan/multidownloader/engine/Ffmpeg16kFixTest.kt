@@ -11,7 +11,7 @@ class Ffmpeg16kFixTest {
 
     @Test fun shipped_libraries_are_16k_aligned() {
         // Unit tests run from the module directory.
-        for (abi in listOf("arm64-v8a", "x86_64")) {
+        for (abi in listOf("arm64-v8a")) {
             for (name in listOf("sharpyuv", "webp", "webpdecoder", "webpdemux", "webpmux")) {
                 val lib = File("src/main/jniLibs/$abi/libmd16k_$name.so")
                 assertEquals("$abi $name", 16384L, Ffmpeg16kFix.loadAlignment(lib))

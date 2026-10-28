@@ -9,7 +9,8 @@
 # Usage: tools/webp16k/build.sh <libwebp v1.6.0 source dir> [jniLibs dir]
 #   git clone --depth 1 --branch v1.6.0 https://github.com/webmproject/libwebp.git /tmp/libwebp
 #   tools/webp16k/build.sh /tmp/libwebp
-# Only 64-bit ABIs: 32-bit Android always uses 4 KB pages.
+# The app ships arm64-v8a only (set ABIS="arm64-v8a x86_64" for emulator/x86 builds); 32-bit Android always
+# uses 4 KB pages, so it never needs this.
 set -euo pipefail
 
 SRC=${1:?path to libwebp v1.6.0 source}
@@ -20,7 +21,7 @@ CMAKE_DIR=${CMAKE_DIR:-$SDK/cmake/3.22.1/bin}
 STRIP=$(ls "$NDK"/toolchains/llvm/prebuilt/*/bin/llvm-strip | head -1)
 LIBS="sharpyuv webp webpdecoder webpdemux webpmux"
 
-for ABI in arm64-v8a x86_64; do
+for ABI in ${ABIS:-arm64-v8a}; do
   BUILD=$(mktemp -d)
   "$CMAKE_DIR/cmake" -S "$SRC" -B "$BUILD" -G Ninja \
     -DCMAKE_MAKE_PROGRAM="$CMAKE_DIR/ninja" \
