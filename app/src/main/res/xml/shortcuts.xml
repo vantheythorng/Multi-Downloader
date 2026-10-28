@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Share target for the dynamic shortcuts published by ShareShortcuts; the category must match ShareShortcuts.CATEGORY. -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <share-target android:targetClass="com.kwan.multidownloader.share.ShareReceiverActivity">
+        <data android:mimeType="text/plain" />
+        <category android:name="com.kwan.multidownloader.category.DOWNLOAD" />
+    </share-target>
+</shortcuts>

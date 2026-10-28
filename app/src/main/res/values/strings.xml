@@ -1,3 +1,220 @@
 <resources>
-    <string name="app_name">MultiDownloader</string>
+    <string name="app_name">Multi-Downloader</string>
+
+    <!-- Share-in -->
+    <string name="share_label_download">@string/app_name</string>
+    <string name="share_no_link">No link found in what was shared</string>
+    <string name="share_close">Close</string>
+    <string name="share_quick_queued_mp3">Downloading as MP3</string>
+    <string name="share_quick_queued_video">Downloading as video</string>
+    <string name="shortcut_download_mp3">Download MP3</string>
+    <string name="shortcut_download_video">Download Video</string>
+    <plurals name="share_selected">
+        <item quantity="one">%d selected</item>
+        <item quantity="other">%d selected</item>
+    </plurals>
+    <string name="share_clear_selection">Clear selection</string>
+
+    <!-- Settings -->
+    <string name="nav_settings">Settings</string>
+    <string name="settings_sharing">Sharing</string>
+    <string name="settings_quick_download">When a link is shared</string>
+    <string name="settings_quick_ask">Ask every time (show the format sheet)</string>
+    <string name="settings_quick_mp3">Always download as MP3</string>
+    <string name="settings_quick_video">Always download as video</string>
+    <string name="settings_downloads">Downloads</string>
+    <string name="settings_default_format">Default format</string>
+    <string name="settings_video_quality">Default video quality</string>
+    <string name="settings_mp3_bitrate">MP3 bitrate</string>
+    <string name="settings_save_location">Save to</string>
+    <string name="settings_save_music_movies">Music and Movies folders</string>
+    <string name="settings_save_downloads">Download folder</string>
+    <string name="settings_concurrent">Simultaneous downloads</string>
+    <string name="settings_wifi_only">Wi-Fi only</string>
+    <string name="settings_wifi_only_hint">Downloads wait for Wi-Fi or another unmetered network. Ones already downloading finish.</string>
+    <string name="settings_embed_thumbnail">Embed cover art</string>
+    <string name="settings_embed_thumbnail_hint">Adds the thumbnail as album art to MP3s</string>
+    <string name="settings_embed_metadata">Embed title and artist</string>
+    <string name="settings_embed_metadata_hint">Writes tags so music apps show the right name</string>
+    <string name="settings_aria2c">Faster downloads (aria2c)</string>
+    <string name="settings_aria2c_hint">Uses several connections per file. Turn off if downloads fail.</string>
+
+    <string name="settings_cookies">Login cookies</string>
+    <string name="settings_cookies_hint">For private or login-only posts. Import a cookies.txt (Netscape format) exported from a browser where you\'re logged in. Cookies stay on this device and are never backed up or shared.</string>
+    <string name="settings_cookies_youtube">YouTube and YouTube Music</string>
+    <string name="settings_cookies_none">Not set. Tap to import</string>
+    <plurals name="settings_cookies_count">
+        <item quantity="one">%d cookie imported. Tap to replace</item>
+        <item quantity="other">%d cookies imported. Tap to replace</item>
+    </plurals>
+    <string name="settings_cookies_remove">Remove cookies</string>
+    <plurals name="settings_cookies_imported">
+        <item quantity="one">Imported %d cookie</item>
+        <item quantity="other">Imported %d cookies</item>
+    </plurals>
+    <string name="settings_cookies_not_netscape">That file isn\'t a cookies.txt in Netscape format</string>
+    <string name="settings_cookies_wrong_site">No %1$s cookies in that file</string>
+    <string name="settings_cookies_too_large">That file is too large to be a cookies.txt</string>
+    <string name="settings_cookies_unreadable">Couldn\'t read that file</string>
+    <string name="settings_cookies_removed">Cookies removed</string>
+
+    <string name="settings_ytdlp">Downloader (yt-dlp)</string>
+    <string name="settings_ytdlp_update_now">Update now</string>
+    <string name="settings_ytdlp_version">Version: %1$s</string>
+    <string name="settings_ytdlp_bundled">the one bundled with the app</string>
+    <string name="settings_ytdlp_last_checked">Last checked %1$s</string>
+    <string name="settings_ytdlp_never_checked">Never checked</string>
+    <string name="settings_ytdlp_auto">Check for updates daily</string>
+    <string name="settings_ytdlp_auto_hint">Sites change often. A failed download still triggers an update even when this is off.</string>
+    <string name="settings_ytdlp_updated">yt-dlp updated to %1$s</string>
+    <string name="settings_ytdlp_up_to_date">yt-dlp is up to date</string>
+    <string name="settings_ytdlp_update_failed">Couldn\'t update yt-dlp. Check your connection and try again.</string>
+
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_theme_system">System default</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_compact_bars">Compact top and bottom bars</string>
+    <string name="settings_compact_bars_hint">Shorter title bar and bottom bar, like older Android apps</string>
+    <string name="settings_dynamic_color">Dynamic colour</string>
+    <string name="settings_dynamic_color_hint">Use colours from your wallpaper</string>
+
+    <string name="settings_privacy">Privacy</string>
+    <string name="settings_privacy_title">Your data stays with you</string>
+    <string name="settings_privacy_no_collection">We don\'t collect any data. There\'s no account, no ads and no tracking.</string>
+    <string name="settings_privacy_local">Your history and settings are saved on this phone, and in your own Google backup if you use one.</string>
+    <string name="settings_privacy_cookies">Login cookies never leave this phone, not even in backups.</string>
+    <string name="settings_privacy_network">The app only connects to the sites you download from, and to GitHub to update yt-dlp.</string>
+
+    <!-- Licences -->
+    <string name="licences_title">Open-source licences</string>
+    <string name="licences_summary">yt-dlp, FFmpeg, Python and the other projects this app is built on</string>
+    <string name="licences_intro">Multi-Downloader is built on these open-source projects. Tap one to see its licence and source. Because it includes GPL-3.0 software, the app\'s own source code is published too (Settings → About → Source code).</string>
+    <string name="licence_use_ytdlp">finds and downloads the media</string>
+    <string name="licence_use_youtubedl">runs yt-dlp on Android</string>
+    <string name="licence_use_ffmpeg">converts to MP3 and merges video</string>
+    <string name="licence_use_libwebp">reads WebP thumbnails (rebuilt for 16 KB-page phones)</string>
+    <string name="licence_use_python">runs yt-dlp</string>
+    <string name="licence_use_aria2">faster downloads (optional)</string>
+    <string name="licence_use_quickjs">solves YouTube\'s JavaScript checks</string>
+    <string name="licence_use_androidx">user interface and background work</string>
+    <string name="licence_use_kotlin">language and core libraries</string>
+    <string name="licence_use_koin">wires the app together</string>
+    <string name="licence_use_coil">loads thumbnails</string>
+    <string name="licence_use_okhttp">network requests for thumbnails</string>
+    <string name="licence_use_jackson">used by youtubedl-android</string>
+    <string name="licence_use_commons">used by youtubedl-android</string>
+    <string name="licence_use_support">small support libraries</string>
+    <string name="navigate_up">Back</string>
+
+    <string name="settings_about">About</string>
+    <string name="settings_about_version">Version %1$s_%2$d</string>
+    <string name="settings_about_notice">For personal use. Respect copyright and each platform\'s terms.</string>
+    <string name="settings_about_developer">Developer</string>
+    <string name="settings_about_developer_name" translatable="false">K\'wan</string>
+    <string name="settings_about_source">Source code</string>
+    <string name="settings_about_source_url" translatable="false">https://github.com/vantheythorng/Multi-Downloader</string>
+    <string name="settings_about_source_label" translatable="false">github.com/vantheythorng/Multi-Downloader</string>
+
+    <string name="settings_background">Background downloads</string>
+    <string name="settings_battery">Battery usage</string>
+    <string name="settings_battery_unrestricted">Unrestricted</string>
+    <string name="settings_battery_optimized">Optimized</string>
+    <string name="settings_battery_restricted">Restricted</string>
+    <string name="settings_battery_hint_unrestricted">Downloads keep running in the background. Tap to change it in app info.</string>
+    <string name="settings_battery_hint_optimized">Android may pause long downloads in the background. Tap to allow unrestricted use.</string>
+    <string name="settings_battery_hint_restricted">Downloads may not run unless the app is open. In app info, open Battery and choose Unrestricted.</string>
+    <string name="settings_quick_hint">Quick downloads use your default quality. The \"Download MP3\" and \"Download Video\" share shortcuts always skip the sheet.</string>
+
+    <!-- First-run notice -->
+    <string name="notice_title">Before you start</string>
+    <string name="notice_personal_use">Multi-Downloader is for personal use.</string>
+    <string name="notice_copyright">Only download what you have the right to, and respect copyright and each platform\'s terms. You are responsible for what you download.</string>
+    <string name="notice_privacy">The app doesn\'t collect or upload anything. Your downloads stay on your phone.</string>
+    <string name="notice_accept">I understand</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_downloads">Downloads</string>
+
+    <!-- Home -->
+    <string name="home_url_label">Paste a link</string>
+    <string name="home_url_placeholder">https://…</string>
+    <string name="home_paste">Paste</string>
+    <string name="home_clear">Clear</string>
+    <string name="home_fetch">Fetch</string>
+    <string name="home_supported">Supported platforms</string>
+    <string name="home_empty_hint">Paste or share a link from YouTube, YouTube Music, Facebook, TikTok or X.</string>
+    <string name="home_loading">Loading info…</string>
+    <string name="home_updating_extractor">Updating yt-dlp…</string>
+    <string name="home_unsupported_warning">Unsupported site, the download may fail</string>
+    <string name="home_no_link">No link found in that text</string>
+    <string name="home_show_formats">Choose format</string>
+    <string name="added_to_queue">Added to queue</string>
+    <string name="retry">Retry</string>
+
+    <!-- Errors: one per ErrorKind; each says what to do next -->
+    <string name="error_private">This video is private.</string>
+    <string name="error_unsupported">This link isn\'t supported.</string>
+    <string name="error_unavailable">This video is unavailable or was removed.</string>
+    <string name="error_link_not_found">Link not found. It may have been deleted.</string>
+    <string name="error_rate_limited">The site is limiting downloads. Try again in a few minutes.</string>
+    <string name="error_login_required">This needs a login. Import cookies in Settings → Login cookies, then tap Retry.</string>
+    <string name="error_network">No connection. Check your internet and tap Retry.</string>
+    <string name="error_extractor_outdated">Extractor outdated, update yt-dlp in Settings → Update now, then tap Retry.</string>
+    <string name="error_site_changed">This site changed and yt-dlp can\'t handle it yet. Try again later.</string>
+    <string name="error_save_failed">Couldn\'t save the file. Check that your phone has free space.</string>
+    <string name="error_unknown">Download failed.</string>
+
+    <!-- Format sheet -->
+    <string name="format_audio">Audio (MP3)</string>
+    <string name="format_video">Video (MP4)</string>
+    <string name="format_quality">Quality</string>
+    <string name="format_quality_best">Best</string>
+    <string name="format_size_estimate">About %1$s</string>
+    <string name="format_size_unknown">Size unknown</string>
+    <string name="format_download">Download</string>
+    <string name="show_more">Show more</string>
+    <string name="show_less">Show less</string>
+
+    <!-- Downloads -->
+    <string name="tab_active">Active</string>
+    <string name="tab_completed">Completed</string>
+    <string name="tab_failed">Failed</string>
+    <string name="empty_active">No downloads in progress</string>
+    <string name="empty_active_hint">Paste a link on Home, or share one from YouTube, TikTok or another app.</string>
+    <string name="empty_completed">Finished downloads will show up here</string>
+    <string name="empty_failed">No failed downloads</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_resume">Resume</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_open">Open</string>
+    <string name="action_share">Share</string>
+    <string name="action_share_link">Share link</string>
+    <string name="action_delete">Delete</string>
+    <string name="no_app_to_open">No app can open this file</string>
+
+    <!-- Statuses -->
+    <string name="status_queued">Queued</string>
+    <string name="status_fetching">Getting info…</string>
+    <string name="status_downloading">Downloading</string>
+    <string name="status_converting">Converting…</string>
+    <string name="status_paused">Paused</string>
+    <string name="status_done">Done</string>
+    <string name="status_failed">Failed</string>
+    <string name="status_cancelled">Cancelled</string>
+    <string name="eta">ETA %1$s</string>
+
+    <!-- Notifications -->
+    <string name="channel_progress">Download progress</string>
+    <string name="channel_completed">Completed downloads</string>
+    <string name="channel_errors">Download errors</string>
+    <string name="saved_to">Saved to %1$s</string>
+    <string name="download_failed">Failed: %1$s</string>
+    <plurals name="downloads_running">
+        <item quantity="one">%d download running</item>
+        <item quantity="other">%d downloads running</item>
+    </plurals>
 </resources>
