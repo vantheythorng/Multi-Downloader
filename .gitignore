@@ -16,3 +16,7 @@ local.properties
 
 # Release keystore and its passwords
 /secret/
+
+# Personal Android Studio state (device list sorting, last-selected run target)
+/.idea/deviceManager.xml
+/.idea/deploymentTargetSelector.xml
