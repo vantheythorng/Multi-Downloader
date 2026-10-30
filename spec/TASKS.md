@@ -71,6 +71,7 @@ Spec: https://claude.ai/artifact/JxGqX7zoGuVu1VWU1jNfxu
     - Check runs daily (not weekly) and can be turned off; update-and-retry on "extractor outdated" always runs
 - [x] ~~**Cookies import per platform** - Netscape `cookies.txt`, app-private storage only~~ (2026-10-28)
     - Validated on import, excluded from backups; not yet tried with real login cookies on a private post
+    - Hidden 2026-10-30 (`CookieStore.ENABLED`): import kept every site's cookies from a browser export. Re-enable after keeping only the platform's domains and warning before import
 - [x] ~~**Wi-Fi only + concurrency limits** - WorkManager constraints~~ (2026-10-28)
     - Wi-Fi only also re-queues downloads that haven't started; not tested on mobile data
 

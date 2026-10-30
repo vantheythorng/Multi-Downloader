@@ -65,6 +65,7 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kwan.multidownloader.BuildConfig
 import com.kwan.multidownloader.R
+import com.kwan.multidownloader.data.cookies.CookieStore
 import com.kwan.multidownloader.data.settings.SaveLocation
 import com.kwan.multidownloader.data.settings.Settings
 import com.kwan.multidownloader.data.settings.ThemeMode
@@ -102,7 +103,7 @@ fun SettingsScreen(
     ) {
         DownloadSection(settings, viewModel)
         SharingSection(settings, viewModel)
-        CookiesSection(viewModel)
+        if (CookieStore.ENABLED) CookiesSection(viewModel)
         ExtractorSection(settings, viewModel)
         SectionHeader(R.string.settings_background)
         BatteryUsageRow()
@@ -310,10 +311,10 @@ private fun PrivacySection() {
         headlineContent = { Text(stringResource(R.string.settings_privacy_title)) },
         supportingContent = {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.padding(top = 4.dp)) {
-                listOf(
+                listOfNotNull(
                     R.string.settings_privacy_no_collection,
                     R.string.settings_privacy_local,
-                    R.string.settings_privacy_cookies,
+                    R.string.settings_privacy_cookies.takeIf { CookieStore.ENABLED },
                     R.string.settings_privacy_network,
                 ).forEach { Text("• " + stringResource(it)) }
             }

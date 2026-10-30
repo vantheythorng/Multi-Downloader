@@ -13,7 +13,6 @@ Share a link from any app, pick MP3 or video, and the file lands in your Music o
 - **Background downloads** with progress notifications, pause/resume, retry, and a limit of 1–3 at once. Optional Wi-Fi only.
 - **Share files** you downloaded (one or several at once), or **share the original link**.
 - **Keeps working when sites change**: yt-dlp updates itself in the app (daily check, plus an automatic update and retry when a site breaks).
-- **Login-only posts** via per-platform `cookies.txt` import. Cookies stay on the phone and are excluded from backups.
 - Light/dark theme, colours from the app icon or your wallpaper, compact bars.
 - **Private**: no account, no ads, no tracking. The app only talks to the sites you download from and to GitHub to update yt-dlp.
 

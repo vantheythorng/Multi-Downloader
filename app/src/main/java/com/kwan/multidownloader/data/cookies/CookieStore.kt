@@ -33,7 +33,7 @@ class CookieStore(private val context: Context) {
     }
 
     /** The file yt-dlp should get via `--cookies` for a link on [platform], if one was imported. */
-    fun fileFor(platform: Platform): File? = file(owner(platform)).takeIf { it.isFile }
+    fun fileFor(platform: Platform): File? = file(owner(platform)).takeIf { ENABLED && it.isFile }
 
     suspend fun refresh() = withContext(Dispatchers.IO) {
         _counts.value = platforms.mapNotNull { platform ->
@@ -88,6 +88,8 @@ class CookieStore(private val context: Context) {
     }
 
     companion object {
+        /** Hidden: import keeps every site's cookies from a browser export, not just the platform's. */
+        const val ENABLED = false
         const val DIR = "cookies"
         private const val MAX_BYTES = 1024 * 1024
     }

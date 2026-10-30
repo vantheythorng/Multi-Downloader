@@ -160,7 +160,7 @@
     <string name="error_unavailable">This video is unavailable or was removed.</string>
     <string name="error_link_not_found">Link not found. It may have been deleted.</string>
     <string name="error_rate_limited">The site is limiting downloads. Try again in a few minutes.</string>
-    <string name="error_login_required">This needs a login. Import cookies in Settings → Login cookies, then tap Retry.</string>
+    <string name="error_login_required">This post needs a login. Multi-Downloader can only download public posts.</string>
     <string name="error_network">No connection. Check your internet and tap Retry.</string>
     <string name="error_extractor_outdated">Extractor outdated, update yt-dlp in Settings → Update now, then tap Retry.</string>
     <string name="error_site_changed">This site changed and yt-dlp can\'t handle it yet. Try again later.</string>
