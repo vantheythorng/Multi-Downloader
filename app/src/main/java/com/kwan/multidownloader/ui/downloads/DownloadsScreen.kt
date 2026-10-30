@@ -9,6 +9,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.foundation.layout.Arrangement
@@ -86,6 +87,8 @@ fun DownloadsScreen(
     var selected by rememberSaveable { mutableStateOf(DownloadsTab.ACTIVE) }
     val items by viewModel.tabs.getValue(selected).collectAsStateWithLifecycle()
     val selection by viewModel.selection.collectAsStateWithLifecycle()
+    val typeFilter by viewModel.typeFilter.collectAsStateWithLifecycle()
+    val hidesSome by viewModel.hidesSome.getValue(selected).collectAsStateWithLifecycle()
     val context = LocalContext.current
     val selecting = selection.isNotEmpty()
 
@@ -117,8 +120,9 @@ fun DownloadsScreen(
                 )
             }
         }
+        TypeFilterRow(selected = typeFilter, onSelect = viewModel::setTypeFilter)
         if (items.isEmpty()) {
-            EmptyTab(selected)
+            EmptyTab(selected, filtered = hidesSome)
         } else {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(items, key = { it.id }) { item ->
@@ -162,8 +166,34 @@ private fun SelectionBar(count: Int, onClear: () -> Unit, onShare: () -> Unit, o
     )
 }
 
+/** All / MP3 / MP4 chips; the choice applies to every tab. */
 @Composable
-private fun EmptyTab(tab: DownloadsTab) {
+private fun TypeFilterRow(selected: MediaType?, onSelect: (MediaType?) -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        listOf(null, MediaType.AUDIO_MP3, MediaType.VIDEO_MP4).forEach { type ->
+            FilterChip(
+                selected = type == selected,
+                onClick = { onSelect(type) },
+                label = {
+                    Text(
+                        when (type) {
+                            null -> stringResource(R.string.filter_all)
+                            MediaType.AUDIO_MP3 -> "MP3"
+                            MediaType.VIDEO_MP4 -> "MP4"
+                        },
+                    )
+                },
+            )
+        }
+    }
+}
+
+/** [filtered]: the tab has downloads, just none of the chosen file type. */
+@Composable
+private fun EmptyTab(tab: DownloadsTab, filtered: Boolean) {
     val icon = when (tab) {
         DownloadsTab.ACTIVE -> Icons.Filled.Download
         DownloadsTab.COMPLETED -> Icons.Filled.CheckCircle
@@ -176,12 +206,12 @@ private fun EmptyTab(tab: DownloadsTab) {
     ) {
         Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.outline, modifier = Modifier.size(48.dp))
         Text(
-            stringResource(tab.emptyRes),
+            stringResource(if (filtered) R.string.empty_filtered else tab.emptyRes),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
         )
-        if (tab == DownloadsTab.ACTIVE) {
+        if (tab == DownloadsTab.ACTIVE && !filtered) {
             Text(
                 stringResource(R.string.empty_active_hint),
                 style = MaterialTheme.typography.bodyMedium,

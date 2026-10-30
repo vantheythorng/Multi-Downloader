@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kwan.multidownloader.data.DownloadRepository
 import com.kwan.multidownloader.data.db.DownloadEntity
+import com.kwan.multidownloader.domain.MediaType
 import com.kwan.multidownloader.domain.Status
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,8 +23,31 @@ enum class DownloadsTab(val statuses: Set<Status>) {
 
 class DownloadsViewModel(private val repository: DownloadRepository) : ViewModel() {
 
-    val tabs: Map<DownloadsTab, StateFlow<List<DownloadEntity>>> = DownloadsTab.entries.associateWith { tab ->
+    private val _typeFilter = MutableStateFlow<MediaType?>(null)
+    /** File type shown on every tab; null shows all. */
+    val typeFilter: StateFlow<MediaType?> = _typeFilter.asStateFlow()
+
+    /** Every download per tab, before the type filter. */
+    private val unfiltered: Map<DownloadsTab, StateFlow<List<DownloadEntity>>> = DownloadsTab.entries.associateWith { tab ->
         repository.observe(tab.statuses).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    }
+
+    val tabs: Map<DownloadsTab, StateFlow<List<DownloadEntity>>> = unfiltered.mapValues { (_, items) ->
+        combine(items, _typeFilter) { all, type ->
+            if (type == null) all else all.filter { it.type == type }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    }
+
+    /** Whether the type filter hides downloads on a tab, so an empty list can say so. */
+    val hidesSome: Map<DownloadsTab, StateFlow<Boolean>> = unfiltered.mapValues { (tab, items) ->
+        combine(items, tabs.getValue(tab)) { all, shown -> all.size > shown.size }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+    }
+
+    /** Also clears the selection, so bulk share/delete never acts on rows the filter hides. */
+    fun setTypeFilter(type: MediaType?) {
+        _typeFilter.value = type
+        clearSelection()
     }
 
     /** Multi-select on the Completed tab, for bulk share or delete. */
