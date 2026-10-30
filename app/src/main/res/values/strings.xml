@@ -110,6 +110,7 @@
     <string name="licence_use_jackson">used by youtubedl-android</string>
     <string name="licence_use_commons">used by youtubedl-android</string>
     <string name="licence_use_support">small support libraries</string>
+    <string name="licence_use_simpleicons">platform logos (trademarks of their owners)</string>
     <string name="navigate_up">Back</string>
 
     <string name="settings_about">About</string>
@@ -149,7 +150,7 @@
     <string name="home_clear">Clear</string>
     <string name="home_fetch">Fetch</string>
     <string name="home_supported">Supported platforms</string>
-    <string name="home_empty_hint">Paste or share a link from YouTube, YouTube Music, Facebook, TikTok or X.</string>
+    <string name="home_empty_hint">Paste or share a link from YouTube, YouTube Music, Facebook, TikTok, X, Instagram or Pinterest.</string>
     <string name="home_loading">Loading info…</string>
     <string name="home_updating_extractor">Updating yt-dlp…</string>
     <string name="home_unsupported_warning">Unsupported site, the download may fail</string>
@@ -165,6 +166,7 @@
     <string name="error_link_not_found">Link not found. It may have been deleted.</string>
     <string name="error_rate_limited">The site is limiting downloads. Try again in a few minutes.</string>
     <string name="error_login_required">This post needs a login. Multi-Downloader can only download public posts.</string>
+    <string name="error_no_video">This post has only photos. Multi-Downloader can only download video and audio.</string>
     <string name="error_network">No connection. Check your internet and tap Retry.</string>
     <string name="error_extractor_outdated">Extractor outdated, update yt-dlp in Settings → Update now, then tap Retry.</string>
     <string name="error_site_changed">This site changed and yt-dlp can\'t handle it yet. Try again later.</string>

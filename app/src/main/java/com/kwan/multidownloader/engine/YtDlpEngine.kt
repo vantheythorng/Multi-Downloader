@@ -64,7 +64,7 @@ class YtDlpEngine(
                 throw EngineException("Cancelled", cause = e)
             } catch (e: Exception) {
                 Log.w(TAG, "fetchInfo failed for $url: ${e.message}")
-                val mapped = YtDlpErrors.map(e.message)
+                val mapped = YtDlpErrors.map(e.message, UrlParser.detect(url))
                 throw EngineException(mapped.message, mapped.kind, e)
             }
             try {
@@ -100,7 +100,7 @@ class YtDlpEngine(
                 EngineEvent.Error(e.message.orEmpty(), e.kind)
             } catch (e: Exception) {
                 Log.w(TAG, "download ${req.taskId} failed: ${e.message}")
-                val mapped = YtDlpErrors.map(e.message)
+                val mapped = YtDlpErrors.map(e.message, UrlParser.detect(req.url))
                 EngineEvent.Error(mapped.message, mapped.kind)
             }
             if (event != null) send(event)

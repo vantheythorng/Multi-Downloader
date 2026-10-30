@@ -70,6 +70,33 @@ class UrlParserTest {
         assertParsed("https://mobile.twitter.com/user/status/123", "https://mobile.twitter.com/user/status/123", Platform.X)
     }
 
+    @Test fun instagram_variants() {
+        assertParsed("https://www.instagram.com/reel/DAbc123xyz/?igsh=MTc4", "https://www.instagram.com/reel/DAbc123xyz/", Platform.INSTAGRAM)
+        assertParsed("https://www.instagram.com/reels/DAbc123xyz/", "https://www.instagram.com/reels/DAbc123xyz/", Platform.INSTAGRAM)
+        assertParsed("https://instagram.com/p/CXyz789/", "https://instagram.com/p/CXyz789/", Platform.INSTAGRAM)
+        assertParsed("https://www.instagram.com/tv/BXyz789/", "https://www.instagram.com/tv/BXyz789/", Platform.INSTAGRAM)
+        assertParsed("https://www.instagram.com/someone/reel/DAbc123xyz/", "https://www.instagram.com/someone/reel/DAbc123xyz/", Platform.INSTAGRAM)
+        assertParsed("https://instagr.am/p/CXyz789/", "https://instagr.am/p/CXyz789/", Platform.INSTAGRAM)
+    }
+
+    @Test fun instagram_profile_and_share_links_are_not_posts() {
+        assertEquals(Platform.OTHER, UrlParser.detect("https://www.instagram.com/someone/"))
+        // yt-dlp's Instagram extractor rejects /share/ links.
+        assertEquals(Platform.OTHER, UrlParser.detect("https://www.instagram.com/share/reel/BAxyz123"))
+    }
+
+    @Test fun pinterest_variants() {
+        assertParsed("https://www.pinterest.com/pin/123456789012345678/", "https://www.pinterest.com/pin/123456789012345678/", Platform.PINTEREST)
+        assertParsed("https://pin.it/1aBcDeF", "https://pin.it/1aBcDeF", Platform.PINTEREST)
+        assertParsed("https://www.pinterest.co.uk/pin/123456/", "https://www.pinterest.co.uk/pin/123456/", Platform.PINTEREST)
+        assertParsed("https://de.pinterest.com/pin/123456/", "https://de.pinterest.com/pin/123456/", Platform.PINTEREST)
+        assertParsed("https://www.pinterest.com.au/pin/some-title--123456/", "https://www.pinterest.com.au/pin/some-title--123456/", Platform.PINTEREST)
+    }
+
+    @Test fun pinterest_board_is_not_a_pin() {
+        assertEquals(Platform.OTHER, UrlParser.detect("https://www.pinterest.com/someone/recipes/"))
+    }
+
     @Test fun share_text_with_title_before_link() = assertParsed(
         "Never Gonna Give You Up - Rick Astley\nhttps://youtu.be/dQw4w9WgXcQ?si=abc",
         "https://youtu.be/dQw4w9WgXcQ",

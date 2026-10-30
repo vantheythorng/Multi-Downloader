@@ -37,6 +37,12 @@ class CookieFileTest {
         assertTrue(CookieFile.parse(text, Platform.X) is CookieFile.Parsed.Valid)
     }
 
+    @Test fun instagram_needs_instagram_cookies() {
+        val text = ".instagram.com\tTRUE\t/\tTRUE\t1893456000\tsessionid\ts"
+        assertTrue(CookieFile.parse(text, Platform.INSTAGRAM) is CookieFile.Parsed.Valid)
+        assertEquals(CookieFile.Parsed.NoCookiesForPlatform, CookieFile.parse(text, Platform.FACEBOOK))
+    }
+
     @Test fun header_is_added_and_crlf_normalised() {
         val windows = ".facebook.com\tTRUE\t/\tTRUE\t1893456000\tc_user\t1\r\n.facebook.com\tTRUE\t/\tTRUE\t1893456000\txs\t2\r\n"
         val parsed = CookieFile.parse(windows, Platform.FACEBOOK) as CookieFile.Parsed.Valid

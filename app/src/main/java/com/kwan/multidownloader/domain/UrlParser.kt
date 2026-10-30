@@ -47,6 +47,10 @@ object UrlParser {
             host in TIKTOK_SHORT_HOSTS -> Platform.TIKTOK
             host.endsWith("tiktok.com") && (path.contains("/video/") || path.startsWith("/t/")) -> Platform.TIKTOK
             (host == "x.com" || host.endsWith("twitter.com")) && path.contains("/status/") -> Platform.X
+            host == "instagr.am" -> Platform.INSTAGRAM
+            host == "instagram.com" && INSTAGRAM_POST_PATH.containsMatchIn(path) -> Platform.INSTAGRAM
+            host == "pin.it" -> Platform.PINTEREST
+            PINTEREST_HOST.matches(host) && PINTEREST_PIN_PATH.containsMatchIn(path) -> Platform.PINTEREST
             else -> Platform.OTHER
         }
     }
@@ -58,6 +62,13 @@ object UrlParser {
     }
 
     private val TIKTOK_SHORT_HOSTS = setOf("vm.tiktok.com", "vt.tiktok.com")
+
+    /** Posts, reels and IGTV, optionally under a username, as yt-dlp's InstagramIE accepts; it rejects /share/ links. */
+    private val INSTAGRAM_POST_PATH = Regex("""^(?:/(?!share/)[^/]+)?/(?:p|tv|reels?)/[^/]+""")
+
+    /** pinterest.com plus its country domains (pinterest.co.uk, de.pinterest.com, ...). */
+    private val PINTEREST_HOST = Regex("""(?:[^.]+\.)?pinterest\.[a-z]{2,3}(?:\.[a-z]{2})?""")
+    private val PINTEREST_PIN_PATH = Regex("""^/pin/(?:[\w-]+--)?\d+""")
 
     private fun isYouTubePath(path: String, query: String): Boolean =
         (path == "/watch" && query.contains("v=")) ||

@@ -43,6 +43,7 @@ private val components = listOf(
     Component("Jackson", "Apache-2.0", R.string.licence_use_jackson, "https://github.com/FasterXML/jackson"),
     Component("Apache Commons IO & Compress", "Apache-2.0", R.string.licence_use_commons, "https://commons.apache.org"),
     Component("Accompanist, JSpecify & Stately", "Apache-2.0", R.string.licence_use_support, "https://www.apache.org/licenses/LICENSE-2.0"),
+    Component("Simple Icons", "CC0-1.0", R.string.licence_use_simpleicons, "https://simpleicons.org"),
 )
 
 @Composable

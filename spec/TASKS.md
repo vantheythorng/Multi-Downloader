@@ -14,6 +14,9 @@ Spec: https://claude.ai/artifact/JxGqX7zoGuVu1VWU1jNfxu
 - [ ] **Release APKs** - ABI-split builds on GitHub Releases
     - Release build has R8 shrinking (63 MB arm64, was 132 MB) and was checked on the emulator
     - Left (on hold, by choice): release signing key, then publishing to GitHub Releases
+- [ ] **Instagram and Pinterest (video only)** - reels, video posts and video pins; no new library, yt-dlp's InstagramIE/PinterestIE
+    - Done in code: link detection, badges, Open with hosts, photo-only posts show "only photos" (`ErrorKind.NO_VIDEO`) instead of updating yt-dlp
+    - Not tested on a device yet: a public reel (may need a login), a video pin and its `pin.it` link, a photo post and an image pin
 
 ## Waiting On
 

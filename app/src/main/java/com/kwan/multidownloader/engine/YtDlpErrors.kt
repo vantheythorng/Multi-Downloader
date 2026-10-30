@@ -1,5 +1,7 @@
 package com.kwan.multidownloader.engine
 
+import com.kwan.multidownloader.domain.Platform
+
 /**
  * Why a fetch or download failed. Stored with each failed download; the UI shows translatable
  * text per kind (see ui/components/ErrorText.kt) and falls back to the raw message for [OTHER].
@@ -11,6 +13,8 @@ enum class ErrorKind {
     LINK_NOT_FOUND,
     RATE_LIMITED,
     LOGIN_REQUIRED,
+    /** A photo-only post (Instagram, Pinterest): there is nothing to save as MP4 or MP3. */
+    NO_VIDEO,
     NETWORK,
     EXTRACTOR_OUTDATED,
     /** Still failing on the newest yt-dlp: the site changed and no fix is released yet. */
@@ -38,9 +42,16 @@ object YtDlpErrors {
         "requested format is not available", "only images are available", "signature extraction failed",
     )
 
+    /** Instagram's own message for a photo post. */
+    private const val INSTAGRAM_NO_VIDEO = "there is no video in this post"
+    /** yt-dlp's generic message, e.g. for a Pinterest image pin; elsewhere it can mean a broken extractor. */
+    private const val NO_FORMATS = "no video formats found"
+    private val PHOTO_PLATFORMS = setOf(Platform.INSTAGRAM, Platform.PINTEREST)
+
     private val HTTP_STATUS = Regex("""http error (\d{3})""")
 
-    fun map(raw: String?): Mapped {
+    /** [platform] is the link's platform; it decides whether "no video formats" means a photo post. */
+    fun map(raw: String?, platform: Platform? = null): Mapped {
         val text = raw.orEmpty()
         val lower = text.lowercase()
         // "Unable to download webpage" wraps both network failures and HTTP errors; only 5xx and no status are transient.
@@ -52,6 +63,8 @@ object YtDlpErrors {
             httpStatus == 404 || httpStatus == 410 -> Mapped("Link not found", ErrorKind.LINK_NOT_FOUND)
             httpStatus == 429 -> Mapped("Too many requests, try again later", ErrorKind.RATE_LIMITED)
             LOGIN_HINTS.any { it in lower } -> Mapped("Login required for this content", ErrorKind.LOGIN_REQUIRED)
+            INSTAGRAM_NO_VIDEO in lower || (NO_FORMATS in lower && platform in PHOTO_PLATFORMS) ->
+                Mapped("This post has no video", ErrorKind.NO_VIDEO)
             NETWORK_HINTS.any { it in lower } && (httpStatus == null || httpStatus >= 500) ->
                 Mapped("Network error", ErrorKind.NETWORK)
             OUTDATED_HINTS.any { it in lower } -> Mapped(OUTDATED_MESSAGE, ErrorKind.EXTRACTOR_OUTDATED)

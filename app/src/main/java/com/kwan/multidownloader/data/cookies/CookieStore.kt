@@ -18,7 +18,7 @@ class CookieStore(private val context: Context) {
     private val dir = File(context.filesDir, DIR)
 
     /** Platforms with their own cookie file; YouTube Music uses YouTube's. */
-    val platforms = listOf(Platform.YOUTUBE, Platform.FACEBOOK, Platform.TIKTOK, Platform.X)
+    val platforms = listOf(Platform.YOUTUBE, Platform.FACEBOOK, Platform.TIKTOK, Platform.X, Platform.INSTAGRAM, Platform.PINTEREST)
 
     private val _counts = MutableStateFlow<Map<Platform, Int>>(emptyMap())
     /** Cookies stored per platform; platforms without a file are absent. */

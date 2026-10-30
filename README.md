@@ -1,6 +1,6 @@
 # Multi-Downloader
 
-An Android app that downloads audio (MP3) and video (MP4) from YouTube, YouTube Music, Facebook, TikTok and X, entirely on your phone. It embeds [yt-dlp](https://github.com/yt-dlp/yt-dlp), Python and FFmpeg through [youtubedl-android](https://github.com/yausername/youtubedl-android); there is no server.
+An Android app that downloads audio (MP3) and video (MP4) from YouTube, YouTube Music, Facebook, TikTok, X, Instagram and Pinterest, entirely on your phone. It embeds [yt-dlp](https://github.com/yt-dlp/yt-dlp), Python and FFmpeg through [youtubedl-android](https://github.com/yausername/youtubedl-android); there is no server.
 
 Share a link from any app, pick MP3 or video, and the file lands in your Music or Movies folder.
 
@@ -23,8 +23,10 @@ Share a link from any app, pick MP3 or video, and the file lands in your Music o
 | Facebook | `/videos/`, `/reel/`, `/watch`, `/share/v/`, `fb.watch` |
 | TikTok | `/@user/video/`, `vm.tiktok.com`, `vt.tiktok.com`, `/t/` |
 | X | `x.com/…/status/`, `twitter.com/…/status/` |
+| Instagram | `/reel/`, `/reels/`, `/p/`, `/tv/` (video posts and reels) |
+| Pinterest | `/pin/` on pinterest.com and its country sites, `pin.it` (video pins) |
 
-Other sites are passed to yt-dlp too, flagged as "may fail". TikTok photo posts download as their sound only (MP3).
+Other sites are passed to yt-dlp too, flagged as "may fail". TikTok photo posts download as their sound only (MP3). Instagram photo posts and Pinterest image pins aren't supported. Instagram sometimes refuses downloads without a login, which the app can't provide.
 
 ## Install
 
@@ -108,6 +110,9 @@ It builds on these open-source projects, also listed in the app under **Settings
 | aria2 | GPL-2.0 |
 | QuickJS | MIT |
 | AndroidX, Kotlin, Koin, Coil, OkHttp, Jackson, Apache Commons | Apache-2.0 |
+| Simple Icons (platform logos) | CC0-1.0 |
+
+The platform logos are trademarks of their owners and are shown only to label which site a link is from; Multi-Downloader isn't affiliated with or endorsed by any of them.
 
 youtubedl-android is GPL-3.0, which is why the app is GPL-3.0 too: anyone distributing it must also make its source available under the same licence.
 

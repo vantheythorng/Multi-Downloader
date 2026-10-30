@@ -52,6 +52,22 @@ class EngineParsingTest {
         assertEquals(ErrorKind.PRIVATE, YtDlpErrors.map("ERROR: Private video").kind)
     }
 
+    @Test fun photo_only_posts_are_not_an_outdated_extractor() {
+        val instagram = YtDlpErrors.map("ERROR: [Instagram] CXyz789: There is no video in this post")
+        assertEquals(ErrorKind.NO_VIDEO, instagram.kind)
+        assertFalse(instagram.retryable)
+        assertEquals(
+            ErrorKind.NO_VIDEO,
+            YtDlpErrors.map("ERROR: [Pinterest] 123: No video formats found!", Platform.PINTEREST).kind,
+        )
+        // Elsewhere the same messages still mean yt-dlp needs an update or are shown as is.
+        assertEquals(ErrorKind.OTHER, YtDlpErrors.map("ERROR: [youtube] x: No video formats found!", Platform.YOUTUBE).kind)
+        assertEquals(
+            ErrorKind.EXTRACTOR_OUTDATED,
+            YtDlpErrors.map("ERROR: [youtube] x: Only images are available for download", Platform.YOUTUBE).kind,
+        )
+    }
+
     @Test fun http_errors_inside_webpage_failures_are_not_network_errors() {
         val notFound = YtDlpErrors.map("ERROR: [generic] clip: Unable to download webpage: HTTP Error 404: Not Found")
         assertEquals(ErrorKind.LINK_NOT_FOUND, notFound.kind)

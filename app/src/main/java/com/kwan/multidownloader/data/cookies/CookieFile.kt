@@ -14,6 +14,8 @@ object CookieFile {
         Platform.FACEBOOK -> listOf("facebook.com")
         Platform.TIKTOK -> listOf("tiktok.com")
         Platform.X -> listOf("x.com", "twitter.com")
+        Platform.INSTAGRAM -> listOf("instagram.com")
+        Platform.PINTEREST -> listOf("pinterest.com")
         Platform.OTHER -> emptyList()
     }
 

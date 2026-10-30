@@ -6,6 +6,8 @@ enum class Platform(val displayName: String) {
     FACEBOOK("Facebook"),
     TIKTOK("TikTok"),
     X("X"),
+    INSTAGRAM("Instagram"),
+    PINTEREST("Pinterest"),
     OTHER("Other"),
 }
 

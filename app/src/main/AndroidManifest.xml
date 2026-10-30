@@ -42,7 +42,7 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
-        <!-- Share-in: appears in the share sheet of YouTube, YT Music, Facebook, TikTok, X. -->
+        <!-- Share-in: appears in the share sheet of YouTube, YT Music, Facebook, TikTok, X, Instagram, Pinterest. -->
         <activity
             android:name=".share.ShareReceiverActivity"
             android:excludeFromRecents="true"
@@ -78,6 +78,11 @@
                 <data android:host="www.facebook.com" />
                 <data android:host="m.facebook.com" />
                 <data android:host="fb.watch" />
+                <data android:host="www.instagram.com" />
+                <data android:host="instagram.com" />
+                <data android:host="www.pinterest.com" />
+                <data android:host="pinterest.com" />
+                <data android:host="pin.it" />
             </intent-filter>
         </activity>
 

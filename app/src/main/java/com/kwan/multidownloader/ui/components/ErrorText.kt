@@ -14,6 +14,7 @@ fun ErrorKind.messageRes(): Int? = when (this) {
     ErrorKind.LINK_NOT_FOUND -> R.string.error_link_not_found
     ErrorKind.RATE_LIMITED -> R.string.error_rate_limited
     ErrorKind.LOGIN_REQUIRED -> R.string.error_login_required
+    ErrorKind.NO_VIDEO -> R.string.error_no_video
     ErrorKind.NETWORK -> R.string.error_network
     ErrorKind.EXTRACTOR_OUTDATED -> R.string.error_extractor_outdated
     ErrorKind.SITE_CHANGED -> R.string.error_site_changed
