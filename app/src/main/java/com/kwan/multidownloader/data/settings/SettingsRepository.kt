@@ -36,7 +36,7 @@ data class Settings(
     val useAria2c: Boolean = false,
     /** "Always download as …": a shared link is queued in this format without the sheet; null = ask. */
     val quickDownload: MediaType? = null,
-    /** On opening the app, offer a supported link found on the clipboard. */
+    /** Tapping the empty link field on Home suggests a supported link found on the clipboard. */
     val suggestCopiedLinks: Boolean = true,
     /** Daily background yt-dlp update check; the update-and-retry on "extractor outdated" runs regardless. */
     val autoUpdateExtractor: Boolean = true,
