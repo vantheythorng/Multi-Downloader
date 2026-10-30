@@ -3,6 +3,13 @@
 
     <style name="Theme.MultiDownloader" parent="android:Theme.Material.Light.NoActionBar" />
 
+    <!-- MainActivity's launch theme: core-splashscreen shows the icon on API 29-30 too, then swaps in the app theme. -->
+    <style name="Theme.MultiDownloader.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.MultiDownloader</item>
+    </style>
+
     <!-- Share receiver: no window of its own, the bottom sheet draws over the source app. -->
     <style name="Theme.MultiDownloader.Translucent">
         <item name="android:windowIsTranslucent">true</item>

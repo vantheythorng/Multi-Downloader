@@ -36,6 +36,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -57,8 +59,10 @@ import com.kwan.multidownloader.ui.home.HomeScreen
 import com.kwan.multidownloader.ui.settings.LicencesScreen
 import com.kwan.multidownloader.ui.settings.SettingsScreen
 import com.kwan.multidownloader.ui.theme.AppTheme
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import org.koin.android.ext.android.inject
 import org.koin.compose.koinInject
 
 @Serializable
@@ -86,8 +90,19 @@ class MainActivity : ComponentActivity() {
     /** Bumped whenever a notification asks to open the Downloads tab. */
     private var openDownloadsRequests by mutableIntStateOf(0)
 
+    private val settingsRepository: SettingsRepository by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Before super.onCreate: swaps the launch theme for Theme.MultiDownloader.
+        val splash = installSplashScreen()
         super.onCreate(savedInstanceState)
+        // Hold the splash until settings load, so the theme and first-run notice don't pop in a frame late.
+        var settingsLoaded = false
+        splash.setKeepOnScreenCondition { !settingsLoaded }
+        lifecycleScope.launch {
+            settingsRepository.settings.first()
+            settingsLoaded = true
+        }
         enableEdgeToEdge()
         if (savedInstanceState == null) handleIntent(intent)
         setContent {

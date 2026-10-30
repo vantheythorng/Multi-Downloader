@@ -4,6 +4,11 @@ Spec: https://claude.ai/artifact/JxGqX7zoGuVu1VWU1jNfxu
 
 ## Active
 
+### M5 - App v2
+- [ ] **Splash screen** - launcher icon on the icon's dark grey (core-splashscreen 1.2.0, so Android 10-11 get it too); held until settings load, so the theme and first-run notice are right on the first frame
+    - Galaxy S10+, Android 12: the icon zooms out of its drawer tile, then Home; launches from adb or the drawer's search show the background only (Android 12 shows the icon for launcher launches only)
+    - Not tested yet: Android 10-11, where the library draws it instead of the system
+
 ### M4 - Polish & release (1 week)
 - [ ] **Device matrix** - Android 10, 13, 14+; arm64 + armeabi-v7a (minSdk 29, so Android 10 is the floor)
     - Pixel 3, Android 12, arm64 (4 KB pages): everything works

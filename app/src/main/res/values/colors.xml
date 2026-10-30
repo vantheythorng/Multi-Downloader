@@ -7,4 +7,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!-- The launcher icon's outer grey, so the splash looks like the icon growing out of its tile. -->
+    <color name="splash_background">#FF282B32</color>
 </resources>
