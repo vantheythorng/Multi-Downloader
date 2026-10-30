@@ -66,6 +66,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kwan.multidownloader.BuildConfig
 import com.kwan.multidownloader.R
 import com.kwan.multidownloader.data.cookies.CookieStore
+import com.kwan.multidownloader.data.settings.FileNameStyle
 import com.kwan.multidownloader.data.settings.SaveLocation
 import com.kwan.multidownloader.data.settings.Settings
 import com.kwan.multidownloader.data.settings.ThemeMode
@@ -145,6 +146,16 @@ private fun DownloadSection(settings: Settings, viewModel: SettingsViewModel) {
         ),
         selected = settings.saveLocation,
         onSelect = { location -> viewModel.update { it.copy(saveLocation = location) } },
+    )
+    ChoiceRow(
+        title = stringResource(R.string.settings_file_name),
+        options = listOf(
+            FileNameStyle.TITLE to stringResource(R.string.settings_file_name_title),
+            FileNameStyle.ID to stringResource(R.string.settings_file_name_id),
+        ),
+        selected = settings.fileNameStyle,
+        onSelect = { style -> viewModel.update { it.copy(fileNameStyle = style) } },
+        description = stringResource(R.string.settings_file_name_hint),
     )
     ChoiceRow(
         title = stringResource(R.string.settings_concurrent),
@@ -397,9 +408,15 @@ private fun SwitchRow(title: String, summary: String?, checked: Boolean, onCheck
     )
 }
 
-/** Shows the current choice; tapping opens a dialog with all [options]. */
+/** Shows the current choice; tapping opens a dialog with all [options] and an optional [description] above them. */
 @Composable
-private fun <T> ChoiceRow(title: String, options: List<Pair<T, String>>, selected: T, onSelect: (T) -> Unit) {
+private fun <T> ChoiceRow(
+    title: String,
+    options: List<Pair<T, String>>,
+    selected: T,
+    onSelect: (T) -> Unit,
+    description: String? = null,
+) {
     var open by remember { mutableStateOf(false) }
     ListItem(
         headlineContent = { Text(title) },
@@ -412,6 +429,14 @@ private fun <T> ChoiceRow(title: String, options: List<Pair<T, String>>, selecte
             title = { Text(title) },
             text = {
                 Column(modifier = Modifier.selectableGroup()) {
+                    description?.let {
+                        Text(
+                            it,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(bottom = 8.dp),
+                        )
+                    }
                     options.forEach { (value, label) ->
                         Row(
                             modifier = Modifier

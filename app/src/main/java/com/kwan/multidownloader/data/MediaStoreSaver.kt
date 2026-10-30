@@ -18,11 +18,11 @@ data class SavedFile(val uri: Uri, val mimeType: String, val sizeBytes: Long, va
 /** Copies a finished temp file into public storage so it shows up in Gallery and music apps (API 29+). */
 class MediaStoreSaver(private val context: Context) {
 
-    suspend fun save(file: File, type: MediaType, location: SaveLocation): SavedFile = withContext(Dispatchers.IO) {
+    suspend fun save(file: File, displayName: String, type: MediaType, location: SaveLocation): SavedFile = withContext(Dispatchers.IO) {
         val resolver = context.contentResolver
         val collection = collectionFor(type, location)
         val values = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, file.name)
+            put(MediaStore.MediaColumns.DISPLAY_NAME, displayName)
             put(MediaStore.MediaColumns.MIME_TYPE, type.mimeType)
             put(MediaStore.MediaColumns.RELATIVE_PATH, "${rootFolder(type, location)}/$FOLDER")
             put(MediaStore.MediaColumns.IS_PENDING, 1)

@@ -11,8 +11,10 @@ import com.kwan.multidownloader.data.DownloadPaths
 import com.kwan.multidownloader.data.MediaStoreSaver
 import com.kwan.multidownloader.data.db.DownloadDao
 import com.kwan.multidownloader.data.db.DownloadEntity
+import com.kwan.multidownloader.data.settings.FileNameStyle
 import com.kwan.multidownloader.data.settings.SettingsRepository
 import com.kwan.multidownloader.domain.DownloadRequest
+import com.kwan.multidownloader.domain.FileNames
 import com.kwan.multidownloader.domain.Status
 import com.kwan.multidownloader.engine.DownloadEngine
 import com.kwan.multidownloader.engine.EngineEvent
@@ -178,7 +180,13 @@ class DownloadWorker(
     private suspend fun save(task: DownloadEntity, done: EngineEvent.Done): Result {
         report(task, Status.CONVERTING, 100f, null, null)
         return try {
-            val saved = saver.save(done.file, task.type, settingsRepository.current().saveLocation)
+            val settings = settingsRepository.current()
+            val name = when (settings.fileNameStyle) {
+                FileNameStyle.TITLE -> FileNames.forTitle(task.title, done.file.nameWithoutExtension, done.file.extension)
+                // yt-dlp already names the temp file "<id>.<ext>".
+                FileNameStyle.ID -> done.file.name
+            }
+            val saved = saver.save(done.file, name, task.type, settings.saveLocation)
             paths.deleteTemp(task.id)
             dao.markDone(task.id, saved.uri.toString(), saved.mimeType, saved.sizeBytes, System.currentTimeMillis())
             notifications.showCompleted(task, saved)

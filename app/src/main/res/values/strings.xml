@@ -29,6 +29,10 @@
     <string name="settings_save_location">Save to</string>
     <string name="settings_save_music_movies">Music and Movies folders</string>
     <string name="settings_save_downloads">Download folder</string>
+    <string name="settings_file_name">File name</string>
+    <string name="settings_file_name_title">Title</string>
+    <string name="settings_file_name_id">ID</string>
+    <string name="settings_file_name_hint">Title uses the video\'s title, shortened to 50 characters. ID uses the site\'s short video code, e.g. dQw4w9WgXcQ. Applies to new downloads.</string>
     <string name="settings_concurrent">Simultaneous downloads</string>
     <string name="settings_wifi_only">Wi-Fi only</string>
     <string name="settings_wifi_only_hint">Downloads wait for Wi-Fi or another unmetered network. Ones already downloading finish.</string>

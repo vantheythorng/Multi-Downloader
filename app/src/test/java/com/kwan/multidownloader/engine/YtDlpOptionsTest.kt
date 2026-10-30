@@ -59,7 +59,7 @@ class YtDlpOptionsTest {
     @Test fun common_options_and_output_template() {
         val args = args(request(MediaType.VIDEO_MP4, "480p"))
         listOf("--no-playlist", "--no-mtime", "--newline", "--continue").forEach { assertTrue(it in args) }
-        assertEquals("/cache/downloads/t1/%(title).80s [%(id)s].%(ext)s", args.valueOf("-o"))
+        assertEquals("/cache/downloads/t1/%(id)s.%(ext)s", args.valueOf("-o"))
         assertFalse("--downloader" in args)
     }
 

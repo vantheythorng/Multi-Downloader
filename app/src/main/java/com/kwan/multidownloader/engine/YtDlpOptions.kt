@@ -6,7 +6,8 @@ import com.kwan.multidownloader.domain.Quality
 
 /** Builds the yt-dlp options for one download; a null value means a flag without an argument. */
 object YtDlpOptions {
-    const val OUTPUT_TEMPLATE = "%(title).80s [%(id)s].%(ext)s"
+    /** Temp name only; the saved file is renamed after the title or kept as the ID (see FileNameStyle). */
+    const val OUTPUT_TEMPLATE = "%(id)s.%(ext)s"
     const val FORMAT_MP4_BEST = "bv*[ext=mp4][vcodec^=avc]+ba[ext=m4a]/bv*+ba/b"
 
     fun formatForHeight(height: Int) = "bv*[height<=$height][ext=mp4]+ba[ext=m4a]/b[height<=$height]"

@@ -18,6 +18,9 @@ import kotlinx.coroutines.flow.map
 
 enum class SaveLocation { MUSIC_MOVIES, DOWNLOADS }
 
+/** How a saved file is named: the shortened title, or the media ID. */
+enum class FileNameStyle { TITLE, ID }
+
 enum class ThemeMode { SYSTEM, LIGHT, DARK }
 
 data class Settings(
@@ -25,6 +28,7 @@ data class Settings(
     val defaultVideoQuality: String = Quality.BEST,
     val mp3Bitrate: Int = 192,
     val saveLocation: SaveLocation = SaveLocation.MUSIC_MOVIES,
+    val fileNameStyle: FileNameStyle = FileNameStyle.TITLE,
     val maxConcurrent: Int = 2,
     val wifiOnly: Boolean = false,
     val embedThumbnail: Boolean = true,
@@ -74,6 +78,7 @@ class SettingsRepository(context: Context) {
             prefs[Keys.DEFAULT_VIDEO_QUALITY] = next.defaultVideoQuality
             prefs[Keys.MP3_BITRATE] = next.mp3Bitrate
             prefs[Keys.SAVE_LOCATION] = next.saveLocation.name
+            prefs[Keys.FILE_NAME_STYLE] = next.fileNameStyle.name
             prefs[Keys.MAX_CONCURRENT] = next.maxConcurrent.coerceIn(Settings.MIN_CONCURRENT, Settings.MAX_CONCURRENT)
             prefs[Keys.WIFI_ONLY] = next.wifiOnly
             prefs[Keys.EMBED_THUMBNAIL] = next.embedThumbnail
@@ -104,6 +109,7 @@ class SettingsRepository(context: Context) {
             defaultVideoQuality = this[Keys.DEFAULT_VIDEO_QUALITY] ?: defaults.defaultVideoQuality,
             mp3Bitrate = this[Keys.MP3_BITRATE] ?: defaults.mp3Bitrate,
             saveLocation = enumOrNull<SaveLocation>(this[Keys.SAVE_LOCATION]) ?: defaults.saveLocation,
+            fileNameStyle = enumOrNull<FileNameStyle>(this[Keys.FILE_NAME_STYLE]) ?: defaults.fileNameStyle,
             maxConcurrent = (this[Keys.MAX_CONCURRENT] ?: defaults.maxConcurrent).coerceIn(Settings.MIN_CONCURRENT, Settings.MAX_CONCURRENT),
             wifiOnly = this[Keys.WIFI_ONLY] ?: defaults.wifiOnly,
             embedThumbnail = this[Keys.EMBED_THUMBNAIL] ?: defaults.embedThumbnail,
@@ -126,6 +132,7 @@ class SettingsRepository(context: Context) {
         val DEFAULT_VIDEO_QUALITY = stringPreferencesKey("default_video_quality")
         val MP3_BITRATE = intPreferencesKey("mp3_bitrate")
         val SAVE_LOCATION = stringPreferencesKey("save_location")
+        val FILE_NAME_STYLE = stringPreferencesKey("file_name_style")
         val MAX_CONCURRENT = intPreferencesKey("max_concurrent")
         val WIFI_ONLY = booleanPreferencesKey("wifi_only")
         val EMBED_THUMBNAIL = booleanPreferencesKey("embed_thumbnail")
