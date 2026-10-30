@@ -22,6 +22,8 @@
     <string name="settings_quick_ask">Ask every time (show the format sheet)</string>
     <string name="settings_quick_mp3">Always download as MP3</string>
     <string name="settings_quick_video">Always download as video</string>
+    <string name="settings_suggest_copied_links">Suggest copied links</string>
+    <string name="settings_suggest_copied_links_summary">Shows a supported link from your clipboard when you tap the link field</string>
     <string name="settings_downloads">Downloads</string>
     <string name="settings_default_format">Default format</string>
     <string name="settings_video_quality">Default video quality</string>
@@ -156,6 +158,8 @@
     <string name="home_unsupported_warning">Unsupported site, the download may fail</string>
     <string name="home_no_link">No link found in that text</string>
     <string name="home_show_formats">Choose format</string>
+    <string name="home_clipboard_title">Link you copied</string>
+    <string name="home_clipboard_dismiss">Dismiss copied link</string>
     <string name="added_to_queue">Added to queue</string>
     <string name="retry">Retry</string>
 

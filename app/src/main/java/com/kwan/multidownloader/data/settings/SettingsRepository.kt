@@ -36,6 +36,8 @@ data class Settings(
     val useAria2c: Boolean = false,
     /** "Always download as …": a shared link is queued in this format without the sheet; null = ask. */
     val quickDownload: MediaType? = null,
+    /** On opening the app, offer a supported link found on the clipboard. */
+    val suggestCopiedLinks: Boolean = true,
     /** Daily background yt-dlp update check; the update-and-retry on "extractor outdated" runs regardless. */
     val autoUpdateExtractor: Boolean = true,
     val theme: ThemeMode = ThemeMode.SYSTEM,
@@ -85,6 +87,7 @@ class SettingsRepository(context: Context) {
             prefs[Keys.EMBED_METADATA] = next.embedMetadata
             prefs[Keys.USE_ARIA2C] = next.useAria2c
             prefs[Keys.QUICK_DOWNLOAD] = next.quickDownload?.name ?: QUICK_DOWNLOAD_OFF
+            prefs[Keys.SUGGEST_COPIED_LINKS] = next.suggestCopiedLinks
             prefs[Keys.AUTO_UPDATE_EXTRACTOR] = next.autoUpdateExtractor
             prefs[Keys.THEME] = next.theme.name
             prefs[Keys.DYNAMIC_COLOR] = next.dynamicColor
@@ -116,6 +119,7 @@ class SettingsRepository(context: Context) {
             embedMetadata = this[Keys.EMBED_METADATA] ?: defaults.embedMetadata,
             useAria2c = this[Keys.USE_ARIA2C] ?: defaults.useAria2c,
             quickDownload = enumOrNull<MediaType>(this[Keys.QUICK_DOWNLOAD]),
+            suggestCopiedLinks = this[Keys.SUGGEST_COPIED_LINKS] ?: defaults.suggestCopiedLinks,
             autoUpdateExtractor = this[Keys.AUTO_UPDATE_EXTRACTOR] ?: defaults.autoUpdateExtractor,
             theme = enumOrNull<ThemeMode>(this[Keys.THEME]) ?: defaults.theme,
             dynamicColor = this[Keys.DYNAMIC_COLOR] ?: defaults.dynamicColor,
@@ -140,6 +144,7 @@ class SettingsRepository(context: Context) {
         val USE_ARIA2C = booleanPreferencesKey("use_aria2c")
         val LAST_EXTRACTOR_CHECK = longPreferencesKey("last_extractor_check")
         val QUICK_DOWNLOAD = stringPreferencesKey("quick_download")
+        val SUGGEST_COPIED_LINKS = booleanPreferencesKey("suggest_copied_links")
         val AUTO_UPDATE_EXTRACTOR = booleanPreferencesKey("auto_update_extractor")
         val THEME = stringPreferencesKey("theme")
         val DYNAMIC_COLOR = booleanPreferencesKey("dynamic_color")

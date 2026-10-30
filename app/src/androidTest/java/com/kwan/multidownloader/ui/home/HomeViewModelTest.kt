@@ -21,6 +21,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -85,5 +86,52 @@ class HomeViewModelTest {
         val error = vm.awaitFetch { it is FetchState.Error } as FetchState.Error
         assertEquals(R.string.error_private, error.messageRes)
         assertTrue(error.canRetry)
+    }
+    @Test fun copied_supported_link_is_offered_and_used() = runBlocking {
+        val engine = FakeEngine { info }
+        val vm = viewModel(engine)
+        vm.onClipboardText("https://youtu.be/abc?si=tracking", stamp = 1L)
+        assertEquals("https://youtu.be/abc", vm.state.value.clipboardLink?.url)
+        assertEquals(1L, vm.seenClipStamp)
+
+        vm.useClipboardLink()
+        assertEquals("https://youtu.be/abc", vm.state.value.url)
+        vm.awaitFetch { it is FetchState.Loaded }
+        assertEquals(1, engine.fetches)
+    }
+
+    @Test fun copying_something_without_supported_link_replaces_the_offer() {
+        val vm = viewModel(FakeEngine { info })
+        vm.onClipboardText("https://youtu.be/abc", stamp = 1L)
+        vm.onClipboardText("https://example.com/video/1", stamp = 2L)
+        assertNull(vm.state.value.clipboardLink)
+        vm.onClipboardText("no link here", stamp = 3L)
+        assertNull(vm.state.value.clipboardLink)
+        assertEquals(3L, vm.seenClipStamp)
+    }
+
+    @Test fun clipboard_is_not_read_while_the_field_has_text() = runBlocking {
+        val vm = viewModel(FakeEngine { info })
+        vm.onUrlChange("https://youtu.be/typed")
+        assertFalse(vm.wantsClipboard())
+    }
+
+    @Test fun clearing_the_field_keeps_the_offer() {
+        val vm = viewModel(FakeEngine { info })
+        vm.onClipboardText("https://youtu.be/abc", stamp = 1L)
+        vm.onUrlChange("typed")
+        vm.clear()
+        assertEquals("https://youtu.be/abc", vm.state.value.clipboardLink?.url)
+    }
+
+    @Test fun dismissed_offer_stays_hidden_until_a_new_clip() {
+        val vm = viewModel(FakeEngine { info })
+        vm.onClipboardText("https://youtu.be/abc", stamp = 1L)
+        vm.dismissClipboardLink()
+        assertNull(vm.state.value.clipboardLink)
+        assertEquals(1L, vm.seenClipStamp)
+
+        vm.onClipboardText("https://youtu.be/def", stamp = 2L)
+        assertEquals("https://youtu.be/def", vm.state.value.clipboardLink?.url)
     }
 }

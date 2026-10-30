@@ -5,9 +5,14 @@ Spec: https://claude.ai/artifact/JxGqX7zoGuVu1VWU1jNfxu
 ## Active
 
 ### M5 - App v2
+- [ ] **Clipboard detection** - tapping the empty link field on Home suggests a supported copied link under it ("Link you copied"); tap fills the field and fetches
+    - Done in code: reads only while the field and window have focus, checks the clip description first (Android 12+ "pasted" toast), reads each clip's text once; ✕ hides it until something new is copied; Settings → Sharing → "Suggest copied links" (on by default)
+    - Galaxy S10+, Android 12: suggestion shows on focus, tap fills and fetches, it comes back after Clear
+    - Not tested yet: the single "pasted" toast, a link copied in another app while the field kept focus
 - [ ] **Splash screen** - launcher icon on the icon's dark grey (core-splashscreen 1.2.0, so Android 10-11 get it too); held until settings load, so the theme and first-run notice are right on the first frame
     - Galaxy S10+, Android 12: the icon zooms out of its drawer tile, then Home; launches from adb or the drawer's search show the background only (Android 12 shows the icon for launcher launches only)
     - Not tested yet: Android 10-11, where the library draws it instead of the system
+- Preview player dropped (2026-10-30): Downloads' Open hands the file to the user's own player
 
 ### M4 - Polish & release (1 week)
 - [ ] **Device matrix** - Android 10, 13, 14+; arm64 + armeabi-v7a (minSdk 29, so Android 10 is the floor)
@@ -27,8 +32,6 @@ Spec: https://claude.ai/artifact/JxGqX7zoGuVu1VWU1jNfxu
 
 ## Someday
 - [ ] **Playlist download (P2)** - select all or some entries of YouTube / YT Music playlists
-- [ ] **Clipboard detection (P2)** - offer supported link on app open
-- [ ] **Preview player (P2)** - Media3 ExoPlayer
 - [ ] **F-Droid submission**
 
 ## Done

@@ -11,6 +11,7 @@ Share a link from any app, pick MP3 or video, and the file lands in your Music o
 - **Download** MP3 (128/192/320 kbps, with cover art and title/artist tags) or MP4 (Best, 1080p, 720p, 480p, 360p).
 - **Share to download**: pick Multi-Downloader in any app's share sheet, or use the **Download MP3** / **Download Video** share shortcuts. Optional "Always download as…" skips the format sheet.
 - **Background downloads** with progress notifications, pause/resume, retry, and a limit of 1–3 at once. Optional Wi-Fi only.
+- **Copied links**: tap the link field and a supported link you copied is suggested under it, one tap to fetch. Can be turned off.
 - **Share files** you downloaded (one or several at once), or **share the original link**.
 - **Keeps working when sites change**: yt-dlp updates itself in the app (daily check, plus an automatic update and retry when a site breaks).
 - Light/dark theme, colours from the app icon or your wallpaper, compact bars.
