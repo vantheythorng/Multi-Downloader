@@ -20,6 +20,27 @@ object FileNames {
         return "${name?.takeIf { it.isNotEmpty() } ?: fallback}.$extension"
     }
 
+    /**
+     * "<input>.<extension>" for a name the user typed, or null when nothing usable is left.
+     * Unlike [forTitle] there's no word cut at [MAX_CHARS]; only the byte limit applies.
+     */
+    fun forRename(input: String, extension: String): String? {
+        val name = capBytes(input.replace(ILLEGAL, " ").replace(WHITESPACE, " ").trimEdges()).trimEdges()
+        return name.takeIf { it.isNotEmpty() }?.let { "$it.$extension" }
+    }
+
+    private fun capBytes(name: String): String {
+        var end = 0
+        var bytes = 0
+        while (end < name.length) {
+            val codePoint = name.codePointAt(end)
+            bytes += utf8Size(codePoint)
+            if (bytes > MAX_BYTES) break
+            end += Character.charCount(codePoint)
+        }
+        return name.substring(0, end)
+    }
+
     private fun shorten(name: String): String {
         var end = 0
         var bytes = 0

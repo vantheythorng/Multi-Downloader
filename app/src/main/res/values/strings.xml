@@ -206,6 +206,15 @@
     <string name="action_share">Share</string>
     <string name="action_share_link">Share link</string>
     <string name="action_delete">Delete</string>
+    <string name="action_rename">Rename</string>
+    <string name="rename_title">Rename file</string>
+    <string name="rename_label">File name</string>
+    <string name="rename_save">Save</string>
+    <string name="rename_error_invalid">Enter a name</string>
+    <string name="rename_error_exists">A file with this name already exists</string>
+    <string name="rename_error_missing">The file is no longer there</string>
+    <string name="rename_error_not_allowed">This file can\'t be renamed from the app</string>
+    <string name="rename_error_failed">Couldn\'t rename the file</string>
     <string name="no_app_to_open">No app can open this file</string>
 
     <!-- Statuses -->

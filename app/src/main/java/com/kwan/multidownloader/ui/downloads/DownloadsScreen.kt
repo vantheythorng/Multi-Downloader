@@ -33,6 +33,7 @@ import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
@@ -89,10 +90,20 @@ fun DownloadsScreen(
     val selection by viewModel.selection.collectAsStateWithLifecycle()
     val typeFilter by viewModel.typeFilter.collectAsStateWithLifecycle()
     val hidesSome by viewModel.hidesSome.getValue(selected).collectAsStateWithLifecycle()
+    val rename by viewModel.rename.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val selecting = selection.isNotEmpty()
 
     BackHandler(enabled = selecting) { viewModel.clearSelection() }
+
+    rename?.let { state ->
+        RenameDialog(
+            state = state,
+            onConfirm = viewModel::confirmRename,
+            onEdit = viewModel::clearRenameError,
+            onDismiss = viewModel::dismissRename,
+        )
+    }
 
     Column(modifier = modifier.fillMaxSize()) {
         if (selecting) {
@@ -263,6 +274,9 @@ private fun rowActions(item: DownloadEntity, viewModel: DownloadsViewModel, cont
                 }
             },
             shareLink,
+            item.contentUri?.let {
+                RowAction(Icons.Filled.Edit, R.string.action_rename) { viewModel.startRename(item.id) }
+            },
             RowAction(Icons.Filled.Delete, R.string.action_delete) { viewModel.delete(item.id) },
         )
         Status.FAILED, Status.CANCELLED -> listOf(

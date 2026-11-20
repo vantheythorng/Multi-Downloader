@@ -93,4 +93,13 @@ class DownloadDaoTest {
             assertEquals(200, it.durationSec)
         }
     }
+
+    @Test fun rename_updates_only_the_title() = runBlocking {
+        dao.upsert(entity("a", Status.DONE))
+        dao.updateTitle("a", "My song")
+        dao.get("a")!!.let {
+            assertEquals("My song", it.title)
+            assertEquals(Status.DONE, it.status)
+        }
+    }
 }

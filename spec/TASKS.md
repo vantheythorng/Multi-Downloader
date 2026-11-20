@@ -12,6 +12,9 @@ Spec: https://claude.ai/artifact/JxGqX7zoGuVu1VWU1jNfxu
 - [ ] **Splash screen** - launcher icon on the icon's dark grey (core-splashscreen 1.2.0, so Android 10-11 get it too); held until settings load, so the theme and first-run notice are right on the first frame
     - Galaxy S10+, Android 12: the icon zooms out of its drawer tile, then Home; launches from adb or the drawer's search show the background only (Android 12 shows the icon for launcher launches only)
     - Not tested yet: Android 10-11, where the library draws it instead of the system
+- [ ] **Rename downloaded files** - Completed rows get a Rename (✎) action; a dialog edits the file name, keeps the extension, and the row shows the new name
+    - Done in code: renames the app's own MediaStore entry (`DISPLAY_NAME`), cleans illegal characters, and catches a name already in the folder, a file deleted outside the app, and files the app no longer owns (after a reinstall)
+    - Not tested on a device yet
 - Preview player dropped (2026-10-30): Downloads' Open hands the file to the user's own player
 
 ### M4 - Polish & release (1 week)

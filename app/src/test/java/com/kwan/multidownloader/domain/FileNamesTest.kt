@@ -1,6 +1,7 @@
 package com.kwan.multidownloader.domain
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -44,5 +45,26 @@ class FileNamesTest {
     @Test fun missing_or_empty_title_uses_the_fallback() {
         assertEquals("abc123.mp4", name(null))
         assertEquals("abc123.mp4", name(" ?/* "))
+    }
+
+    private fun rename(input: String) = FileNames.forRename(input, extension = "mp3")
+
+    @Test fun rename_keeps_a_long_name_without_a_word_cut() {
+        val input = "This is a very long caption that keeps going well past the limit of the name"
+        assertEquals("$input.mp3", rename(input))
+    }
+
+    @Test fun rename_cleans_illegal_characters_and_whitespace() {
+        assertEquals("AC DC Back in Black.mp3", rename("  AC/DC:  Back\tin \"Black\" "))
+    }
+
+    @Test fun rename_of_nothing_usable_is_null() {
+        assertNull(rename(""))
+        assertNull(rename(" ?/* ..."))
+    }
+
+    @Test fun rename_is_capped_by_bytes() {
+        val result = rename("日本語".repeat(30))!!
+        assertEquals("日本語".repeat(16) + "日本.mp3", result)
     }
 }

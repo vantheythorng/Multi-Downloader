@@ -3,6 +3,7 @@ package com.kwan.multidownloader.data
 import androidx.core.net.toUri
 import com.kwan.multidownloader.data.db.DownloadDao
 import com.kwan.multidownloader.data.db.DownloadEntity
+import com.kwan.multidownloader.domain.FileNames
 import com.kwan.multidownloader.domain.MediaInfo
 import com.kwan.multidownloader.domain.MediaType
 import com.kwan.multidownloader.domain.ParsedLink
@@ -92,6 +93,25 @@ class DownloadRepository(
         dao.updateStatus(id, Status.CANCELLED)
         scheduler.cancel(id)
         paths.deleteTemp(id)
+    }
+
+    /** Current name of a finished download's file in shared storage. */
+    suspend fun fileName(id: String): String? =
+        dao.get(id)?.contentUri?.let { saver.displayName(it.toUri()) }
+
+    /** Renames the saved file to "<newBase>.<its extension>" and shows the new name as the title. */
+    suspend fun rename(id: String, newBase: String): RenameResult {
+        val entity = dao.get(id) ?: return RenameResult.MISSING
+        val uri = entity.contentUri?.toUri() ?: return RenameResult.MISSING
+        val current = saver.displayName(uri) ?: return RenameResult.MISSING
+        val extension = current.substringAfterLast('.', "").ifEmpty {
+            if (entity.type == MediaType.AUDIO_MP3) "mp3" else "mp4"
+        }
+        val name = FileNames.forRename(newBase, extension) ?: return RenameResult.INVALID
+        if (name == current) return RenameResult.UNCHANGED
+        val result = saver.rename(uri, name)
+        if (result == RenameResult.RENAMED) dao.updateTitle(id, name.removeSuffix(".$extension"))
+        return result
     }
 
     suspend fun delete(id: String, deleteFile: Boolean = true) {

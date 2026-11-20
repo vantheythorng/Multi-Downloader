@@ -3,6 +3,7 @@ package com.kwan.multidownloader.ui.downloads
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kwan.multidownloader.data.DownloadRepository
+import com.kwan.multidownloader.data.RenameResult
 import com.kwan.multidownloader.data.db.DownloadEntity
 import com.kwan.multidownloader.domain.MediaType
 import com.kwan.multidownloader.domain.Status
@@ -20,6 +21,15 @@ enum class DownloadsTab(val statuses: Set<Status>) {
     COMPLETED(Status.COMPLETED),
     FAILED(Status.FAILED_OR_CANCELLED),
 }
+
+/** [name] is the file name without its [extension]; [error] is the last failed attempt, if any. */
+data class RenameState(
+    val id: String,
+    val name: String,
+    val extension: String,
+    val error: RenameResult? = null,
+    val saving: Boolean = false,
+)
 
 class DownloadsViewModel(private val repository: DownloadRepository) : ViewModel() {
 
@@ -69,6 +79,46 @@ class DownloadsViewModel(private val repository: DownloadRepository) : ViewModel
         val ids = selection.value
         clearSelection()
         launch { ids.forEach { repository.delete(it, deleteFile = true) } }
+    }
+
+    private val _rename = MutableStateFlow<RenameState?>(null)
+    /** The open Rename dialog, or null when it's closed. */
+    val rename: StateFlow<RenameState?> = _rename.asStateFlow()
+
+    fun startRename(id: String) = launch {
+        val current = repository.fileName(id)
+        if (current == null) {
+            _rename.value = RenameState(id, name = "", extension = "", error = RenameResult.MISSING)
+            return@launch
+        }
+        val dot = current.lastIndexOf('.')
+        _rename.value = if (dot > 0) {
+            RenameState(id, name = current.substring(0, dot), extension = current.substring(dot + 1))
+        } else {
+            RenameState(id, name = current, extension = "")
+        }
+    }
+
+    fun confirmRename(newName: String) {
+        val state = _rename.value ?: return
+        if (state.saving) return
+        _rename.value = state.copy(saving = true, error = null)
+        launch {
+            val result = repository.rename(state.id, newName)
+            _rename.update { open ->
+                when {
+                    open?.id != state.id -> open
+                    result == RenameResult.RENAMED || result == RenameResult.UNCHANGED -> null
+                    else -> open.copy(saving = false, error = result)
+                }
+            }
+        }
+    }
+
+    fun clearRenameError() = _rename.update { it?.copy(error = null) }
+
+    fun dismissRename() {
+        _rename.value = null
     }
 
     fun pause(id: String) = launch { repository.pause(id) }
