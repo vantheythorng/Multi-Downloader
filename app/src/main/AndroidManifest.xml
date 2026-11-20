@@ -97,6 +97,17 @@
             tools:node="merge" />
 
         <!-- WorkManager is initialised by Koin's workManagerFactory() in MultiDownloaderApp. -->
+        <!-- Shares audio clips straight from the cache, so they're never saved to shared storage. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.files"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"

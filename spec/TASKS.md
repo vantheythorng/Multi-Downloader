@@ -20,6 +20,10 @@ Spec: https://claude.ai/artifact/JxGqX7zoGuVu1VWU1jNfxu
     - The All / MP3 / MP4 filter moved to the search bar's ⋮ menu
     - Galaxy S10+, Android 12: search, filter menu, tap to play, row menu (finished rows) and selection mode work
     - Not tested yet: the row menu on active, paused and failed downloads
+- [ ] **Clip audio** - a finished download's ⋮ → Clip audio: pick a range, Preview it, Send shares an AAC .m4a clip without saving it (Media3 1.11.1 Transformer; Android has no MP3 encoder)
+    - Done in code: the clip goes to cache/clips (only the newest is kept, old ones cleared on start) and out through a FileProvider, named like the saved file ("Song.mp3" → "Song.m4a"); MP4s lose the picture; closing the sheet cancels the export
+    - Galaxy S10+, Android 12, MP3 source: range, Preview stopping at the end, Send → share sheet, 11 s clip = 188 KB AAC 131 kbps, nothing new in Music / Movies / Download
+    - Not tested yet: the clip's name on a device, an MP4 source, cancelling mid-export, a receiving app (WhatsApp, Telegram)
 - Preview player dropped (2026-10-30): Downloads' Open hands the file to the user's own player
 
 ### M4 - Polish & release (1 week)

@@ -1,6 +1,7 @@
 package com.kwan.multidownloader
 
 import android.app.Application
+import com.kwan.multidownloader.data.AudioClipper
 import com.kwan.multidownloader.di.allModules
 import com.kwan.multidownloader.share.ShareShortcuts
 import com.kwan.multidownloader.work.DownloadNotifications
@@ -22,5 +23,7 @@ class MultiDownloaderApp : Application() {
         get<DownloadNotifications>().createChannels()
         ExtractorUpdateWorker.schedule(this)
         ShareShortcuts.publish(this)
+        val clipper = get<AudioClipper>()
+        Thread(clipper::deleteOldClips, "clip-cleanup").start()
     }
 }

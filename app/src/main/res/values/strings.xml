@@ -212,6 +212,14 @@
     <string name="action_share_link">Share link</string>
     <string name="action_delete">Delete</string>
     <string name="action_rename">Rename</string>
+    <string name="action_clip">Clip audio</string>
+    <string name="clip_title">Clip audio</string>
+    <string name="clip_length">%1$s clip</string>
+    <string name="clip_preview">Preview</string>
+    <string name="clip_stop">Stop</string>
+    <string name="clip_send">Send</string>
+    <string name="clip_making">Making the clip…</string>
+    <string name="clip_failed">Couldn\'t make the clip</string>
     <string name="rename_title">Rename file</string>
     <string name="rename_label">File name</string>
     <string name="rename_save">Save</string>

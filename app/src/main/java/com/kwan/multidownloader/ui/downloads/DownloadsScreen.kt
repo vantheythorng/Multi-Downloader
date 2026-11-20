@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.ContentCut
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Edit
@@ -47,6 +48,7 @@ import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -91,10 +93,25 @@ fun DownloadsScreen(
     val hidesSome by viewModel.hidesSome.getValue(selected).collectAsStateWithLifecycle()
     val searchResults by viewModel.searchResults.collectAsStateWithLifecycle()
     val rename by viewModel.rename.collectAsStateWithLifecycle()
+    val clip by viewModel.clip.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val selecting = selection.isNotEmpty()
 
     BackHandler(enabled = selecting) { viewModel.clearSelection() }
+
+    LaunchedEffect(viewModel) {
+        viewModel.clipReady.collect { ready -> context.startSafely(ShareIntents.shareClip(context, ready.file, ready.title)) }
+    }
+
+    clip?.let { state ->
+        ClipSheet(
+            state = state,
+            onDuration = viewModel::setClipDuration,
+            onRangeChange = viewModel::setClipRange,
+            onSend = viewModel::sendClip,
+            onDismiss = viewModel::dismissClip,
+        )
+    }
 
     rename?.let { state ->
         RenameDialog(
@@ -301,6 +318,9 @@ private fun rowActions(item: DownloadEntity, viewModel: DownloadsViewModel, cont
                 }
             },
             shareLink,
+            item.contentUri?.let {
+                RowAction(Icons.Filled.ContentCut, R.string.action_clip) { viewModel.startClip(item) }
+            },
             item.contentUri?.let {
                 RowAction(Icons.Filled.Edit, R.string.action_rename) { viewModel.startRename(item.id) }
             },

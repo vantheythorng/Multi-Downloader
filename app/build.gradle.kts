@@ -123,6 +123,9 @@ dependencies {
     implementation(libs.youtubedl.library)
     implementation(libs.youtubedl.ffmpeg)
     implementation(libs.youtubedl.aria2c)
+    // Clip audio: Transformer cuts and re-encodes to AAC; ExoPlayer previews the range.
+    implementation(libs.androidx.media3.transformer)
+    implementation(libs.androidx.media3.exoplayer)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(platform(libs.androidx.compose.bom))
