@@ -42,7 +42,7 @@
     <string name="settings_embed_thumbnail_hint">Adds the thumbnail as album art to MP3s</string>
     <string name="settings_embed_metadata">Embed title and artist</string>
     <string name="settings_embed_metadata_hint">Writes tags so music apps show the right name</string>
-    <string name="settings_aria2c">Faster downloads (aria2c)</string>
+    <string name="settings_aria2c">Faster downloads</string>
     <string name="settings_aria2c_hint">Uses several connections per file. Turn off if downloads fail.</string>
 
     <string name="settings_cookies">Login cookies</string>
@@ -64,7 +64,7 @@
     <string name="settings_cookies_unreadable">Couldn\'t read that file</string>
     <string name="settings_cookies_removed">Cookies removed</string>
 
-    <string name="settings_ytdlp">Downloader (yt-dlp)</string>
+    <string name="settings_ytdlp">Downloader</string>
     <string name="settings_ytdlp_update_now">Update now</string>
     <string name="settings_ytdlp_version">Version: %1$s</string>
     <string name="settings_ytdlp_bundled">the one bundled with the app</string>
