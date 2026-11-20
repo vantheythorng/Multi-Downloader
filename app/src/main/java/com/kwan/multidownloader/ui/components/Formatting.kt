@@ -15,9 +15,13 @@ fun formatDuration(seconds: Int): String =
 
 fun formatSize(context: Context, bytes: Long): String = Formatter.formatShortFileSize(context, bytes)
 
-/** "Nov 20" in the user's locale; the year only shows for other years. */
+/** The date with the year and a short month, in the user's locale, e.g. "Nov 20, 2026". */
 fun formatDate(context: Context, millis: Long): String =
-    DateUtils.formatDateTime(context, millis, DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_ABBREV_MONTH)
+    DateUtils.formatDateTime(
+        context,
+        millis,
+        DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR or DateUtils.FORMAT_ABBREV_MONTH,
+    )
 
 @Composable
 fun qualityLabel(quality: String): String = when {

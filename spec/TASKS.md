@@ -16,10 +16,10 @@ Spec: https://claude.ai/artifact/JxGqX7zoGuVu1VWU1jNfxu
     - Done in code: renames the app's own MediaStore entry (`DISPLAY_NAME`), cleans illegal characters, and catches a name already in the folder, a file deleted outside the app, and files the app no longer owns (after a reinstall)
     - Not tested on a device yet
 - [ ] **Downloads search and simpler rows** - the top bar is a search bar (Material 3 `AppBarWithSearch`); tapping it opens a full-screen search across every tab, and leaving it clears the search
-    - Rows: platform logo, title, date · size; tapping a finished row plays it; every action is in the row's ⋮ menu
-    - The All / MP3 / MP4 filter moved to the search bar's ⋮ menu
+    - Rows: thumbnail (a music note or film icon when there's none), title, "Nov 20, 2026 · 276 kB · MP3"; tapping a finished row plays it; every action is in the row's ⋮ menu
+    - The All / MP3 / MP4 filter is a tinted circle beside the search field, as tall as it, naming the current choice; tapping it opens the menu
     - Galaxy S10+, Android 12: search, filter menu, tap to play, row menu (finished rows) and selection mode work
-    - Not tested yet: the row menu on active, paused and failed downloads
+    - Not tested yet: the row menu on active, paused and failed downloads; the thumbnail, file type, date and filter circle on a device
 - [ ] **Clip audio** - a finished download's ⋮ → Clip audio: pick a range, Preview it, Send shares an AAC .m4a clip without saving it (Media3 1.11.1 Transformer; Android has no MP3 encoder)
     - Done in code: the clip goes to cache/clips (only the newest is kept, old ones cleared on start) and out through a FileProvider, named like the saved file ("Song.mp3" → "Song.m4a"); MP4s lose the picture; closing the sheet cancels the export
     - Galaxy S10+, Android 12, MP3 source: range, Preview stopping at the end, Send → share sheet, 11 s clip = 188 KB AAC 131 kbps, nothing new in Music / Movies / Download

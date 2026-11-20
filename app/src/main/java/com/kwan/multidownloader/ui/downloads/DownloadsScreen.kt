@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.Checkbox
@@ -21,6 +22,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -33,6 +36,8 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ContentCut
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Movie
+import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Pause
@@ -45,6 +50,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -56,6 +63,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -67,12 +77,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.compose.AsyncImage
 import com.kwan.multidownloader.R
 import com.kwan.multidownloader.data.db.DownloadEntity
 import com.kwan.multidownloader.domain.MediaType
 import com.kwan.multidownloader.domain.Status
 import com.kwan.multidownloader.share.ShareIntents
-import com.kwan.multidownloader.ui.components.PlatformIcon
 import com.kwan.multidownloader.ui.components.errorText
 import com.kwan.multidownloader.ui.components.formatDate
 import com.kwan.multidownloader.ui.components.formatSize
@@ -215,26 +225,33 @@ private fun SelectionBar(count: Int, onClear: () -> Unit, onShare: () -> Unit, o
     )
 }
 
-/** The search bar's options menu: All / MP3 / MP4, ticked; the choice applies to every tab. */
+/**
+ * The search bar's file type filter: a tinted circle naming the current choice (All, MP3 or MP4),
+ * opening a menu of the three with the current one ticked. The choice applies to every tab.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TypeFilterMenu(selected: MediaType?, onSelect: (MediaType?) -> Unit) {
     var open by remember { mutableStateOf(false) }
-    Box {
-        IconButton(onClick = { open = true }) {
-            Icon(Icons.Filled.MoreVert, contentDescription = stringResource(R.string.more_options))
+    val current = typeLabel(selected)
+    val description = stringResource(R.string.filter_type, current)
+    Box(modifier = Modifier.padding(horizontal = 4.dp)) {
+        Surface(
+            onClick = { open = true },
+            shape = CircleShape,
+            color = MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            // As tall as the search field beside it.
+            modifier = Modifier.size(SearchBarDefaults.InputFieldHeight).semantics { contentDescription = description },
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Text(current, style = MaterialTheme.typography.labelMedium, maxLines = 1)
+            }
         }
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
             listOf(null, MediaType.AUDIO_MP3, MediaType.VIDEO_MP4).forEach { type ->
                 DropdownMenuItem(
-                    text = {
-                        Text(
-                            when (type) {
-                                null -> stringResource(R.string.filter_all)
-                                MediaType.AUDIO_MP3 -> "MP3"
-                                MediaType.VIDEO_MP4 -> "MP4"
-                            },
-                        )
-                    },
+                    text = { Text(typeLabel(type)) },
                     onClick = {
                         onSelect(type)
                         open = false
@@ -369,7 +386,7 @@ private fun DownloadRow(
             if (selected != null) {
                 Checkbox(checked = selected, onCheckedChange = null)
             }
-            PlatformIcon(item.platform, size = 40.dp)
+            Thumbnail(item)
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
                     item.title ?: item.sourceUrl,
@@ -377,10 +394,11 @@ private fun DownloadRow(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
-                // Finished: when it finished and its size; otherwise when it was added.
+                // Finished: when it finished, its size and type; otherwise when it was added, and the type.
                 val subtitle = listOfNotNull(
                     formatDate(context, item.completedAt ?: item.createdAt),
                     item.sizeBytes?.takeIf { item.status == Status.DONE }?.let { formatSize(context, it) },
+                    if (item.type == MediaType.AUDIO_MP3) "MP3" else "MP4",
                 ).joinToString(" · ")
                 Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
@@ -389,7 +407,7 @@ private fun DownloadRow(
         }
 
         // Lined up with the title, past the logo, and short of the ⋮ button.
-        val detailsPadding = Modifier.padding(start = 52.dp, end = 12.dp)
+        val detailsPadding = Modifier.padding(start = ThumbnailSize + 12.dp, end = 12.dp)
         if (item.status.isActive) {
             ActiveProgress(item, detailsPadding)
         } else if (item.status != Status.DONE) {
@@ -399,6 +417,44 @@ private fun DownloadRow(
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.error,
                 modifier = detailsPadding.padding(top = 8.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun typeLabel(type: MediaType?): String = when (type) {
+    null -> stringResource(R.string.filter_all)
+    MediaType.AUDIO_MP3 -> "MP3"
+    MediaType.VIDEO_MP4 -> "MP4"
+}
+
+private val ThumbnailSize = 48.dp
+
+/**
+ * The video's thumbnail, cropped square; until it loads, or if there's none or it fails, a music
+ * note (MP3) or film (MP4) icon shows through instead.
+ */
+@Composable
+private fun Thumbnail(item: DownloadEntity) {
+    Box(
+        modifier = Modifier
+            .size(ThumbnailSize)
+            .clip(RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant),
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(
+            if (item.type == MediaType.AUDIO_MP3) Icons.Filled.MusicNote else Icons.Filled.Movie,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        if (item.thumbnailUrl != null) {
+            AsyncImage(
+                model = item.thumbnailUrl,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.matchParentSize(),
             )
         }
     }
