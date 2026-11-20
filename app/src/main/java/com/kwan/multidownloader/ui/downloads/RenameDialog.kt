@@ -16,12 +16,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.window.DialogProperties
 import androidx.compose.foundation.layout.fillMaxWidth
 import com.kwan.multidownloader.R
 import com.kwan.multidownloader.data.RenameResult
@@ -38,15 +39,18 @@ fun RenameDialog(
         mutableStateOf(TextFieldValue(state.name, selection = TextRange(0, state.name.length)))
     }
     val focus = remember { FocusRequester() }
-    val keyboard = LocalSoftwareKeyboardController.current
     val canSave = value.text.isNotBlank() && !state.saving && state.error != RenameResult.MISSING
 
     LaunchedEffect(Unit) { focus.requestFocus() }
 
     AlertDialog(
-        onDismissRequest = onDismiss,
+        // Only Cancel or Save closes it, not a tap outside or Back.
+        onDismissRequest = {},
+        properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
         title = { Text(stringResource(R.string.rename_title)) },
         text = {
+            // The dialog is its own window, so its focus manager has to be read in here.
+            val focusManager = LocalFocusManager.current
             OutlinedTextField(
                 value = value,
                 onValueChange = {
@@ -59,8 +63,8 @@ fun RenameDialog(
                 isError = state.error != null,
                 supportingText = state.error?.let { error -> { Text(stringResource(error.messageRes)) } },
                 keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences, imeAction = ImeAction.Done),
-                // Done only closes the keyboard; the dialog's Save button renames.
-                keyboardActions = KeyboardActions(onDone = { keyboard?.hide() }),
+                // Done clears focus, which also closes the keyboard; the dialog's Save button renames.
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                 modifier = Modifier.fillMaxWidth().focusRequester(focus),
             )
         },
