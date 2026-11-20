@@ -15,6 +15,11 @@ Spec: https://claude.ai/artifact/JxGqX7zoGuVu1VWU1jNfxu
 - [ ] **Rename downloaded files** - Completed rows get a Rename (✎) action; a dialog edits the file name, keeps the extension, and the row shows the new name
     - Done in code: renames the app's own MediaStore entry (`DISPLAY_NAME`), cleans illegal characters, and catches a name already in the folder, a file deleted outside the app, and files the app no longer owns (after a reinstall)
     - Not tested on a device yet
+- [ ] **Downloads search and simpler rows** - the top bar is a search bar (Material 3 `AppBarWithSearch`); tapping it opens a full-screen search across every tab, and leaving it clears the search
+    - Rows: platform logo, title, date · size; tapping a finished row plays it; every action is in the row's ⋮ menu
+    - The All / MP3 / MP4 filter moved to the search bar's ⋮ menu
+    - Galaxy S10+, Android 12: search, filter menu, tap to play, row menu (finished rows) and selection mode work
+    - Not tested yet: the row menu on active, paused and failed downloads
 - Preview player dropped (2026-10-30): Downloads' Open hands the file to the user's own player
 
 ### M4 - Polish & release (1 week)

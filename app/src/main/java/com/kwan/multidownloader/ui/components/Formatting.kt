@@ -1,6 +1,7 @@
 package com.kwan.multidownloader.ui.components
 
 import android.content.Context
+import android.text.format.DateUtils
 import android.text.format.Formatter
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
@@ -13,6 +14,10 @@ fun formatDuration(seconds: Int): String =
     else "%d:%02d".format(seconds / 60, seconds % 60)
 
 fun formatSize(context: Context, bytes: Long): String = Formatter.formatShortFileSize(context, bytes)
+
+/** "Nov 20" in the user's locale; the year only shows for other years. */
+fun formatDate(context: Context, millis: Long): String =
+    DateUtils.formatDateTime(context, millis, DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_ABBREV_MONTH)
 
 @Composable
 fun qualityLabel(quality: String): String = when {

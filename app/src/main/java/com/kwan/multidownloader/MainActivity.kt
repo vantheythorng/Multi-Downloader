@@ -133,6 +133,7 @@ private fun AppRoot(openDownloadsRequests: Int, settingsRepository: SettingsRepo
     val compact = settings?.compactBars ?: Settings().compactBars
     val destination = navController.currentBackStackEntryAsState().value?.destination
     val onLicences = destination?.hasRoute(LicencesRoute::class) == true
+    val onDownloads = destination?.hasRoute(DownloadsRoute::class) == true
     val current = topLevelRoutes.firstOrNull { item -> destination?.hierarchy?.any { it.hasRoute(item.route::class) } == true }
         ?: topLevelRoutes.first()
     val title = stringResource(if (onLicences) R.string.licences_title else current.titleRes)
@@ -153,7 +154,10 @@ private fun AppRoot(openDownloadsRequests: Int, settingsRepository: SettingsRepo
     CompositionLocalProvider(LocalCompactBars provides compact) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { AppTopBar(title = title, onBack = if (onLicences) ({ navController.popBackStack() }) else null) },
+        // Downloads draws its own top bar, with search.
+        topBar = {
+            if (!onDownloads) AppTopBar(title = title, onBack = if (onLicences) ({ navController.popBackStack() }) else null)
+        },
         bottomBar = { if (!onLicences) BottomBar(navController) },
     ) { innerPadding ->
         NavHost(

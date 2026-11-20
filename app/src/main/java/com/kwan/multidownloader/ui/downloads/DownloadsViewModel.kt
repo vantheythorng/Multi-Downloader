@@ -37,6 +37,19 @@ class DownloadsViewModel(private val repository: DownloadRepository) : ViewModel
     /** File type shown on every tab; null shows all. */
     val typeFilter: StateFlow<MediaType?> = _typeFilter.asStateFlow()
 
+    private val _query = MutableStateFlow("")
+
+    fun setQuery(text: String) {
+        _query.value = text
+    }
+
+    /** Downloads on any tab matching the search page's text, newest first; none while it's blank. */
+    val searchResults: StateFlow<List<DownloadEntity>> =
+        combine(repository.observeAll(), _query) { all, query ->
+            val words = query.trim().split(WHITESPACE).filter { it.isNotEmpty() }
+            if (words.isEmpty()) emptyList() else all.filter { it.matches(words) }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+
     /** Every download per tab, before the type filter. */
     private val unfiltered: Map<DownloadsTab, StateFlow<List<DownloadEntity>>> = DownloadsTab.entries.associateWith { tab ->
         repository.observe(tab.statuses).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
@@ -130,4 +143,11 @@ class DownloadsViewModel(private val repository: DownloadRepository) : ViewModel
     private fun launch(block: suspend () -> Unit) {
         viewModelScope.launch { block() }
     }
+}
+
+private val WHITESPACE = Regex("""\s+""")
+
+/** Every word appears in the title (or the link, before the title is known) or the uploader, ignoring case. */
+private fun DownloadEntity.matches(words: List<String>): Boolean = words.all { word ->
+    (title ?: sourceUrl).contains(word, ignoreCase = true) || uploader?.contains(word, ignoreCase = true) == true
 }
