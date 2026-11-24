@@ -12,6 +12,9 @@ Share a link from any app, pick MP3 or video, and the file lands in your Music o
 - **Share to download**: pick Multi-Downloader in any app's share sheet, or use the **Download MP3** / **Download Video** share shortcuts. Optional "Always download as…" skips the format sheet.
 - **Background downloads** with progress notifications, pause/resume, retry, and a limit of 1–3 at once. Optional Wi-Fi only.
 - **Copied links**: tap the link field and a supported link you copied is suggested under it, one tap to fetch. Can be turned off.
+- **Downloads tab**: search by title or uploader, filter by All / MP3 / MP4, thumbnails with date, size and file type, and tap a finished download to play it.
+- **Rename** finished downloads in place (same folder, no extra permission).
+- **Clip audio**: pick a range of a finished download, preview it, and send it as an `.m4a` clip without saving it to your storage.
 - **Share files** you downloaded (one or several at once), or **share the original link**.
 - **Keeps working when sites change**: yt-dlp updates itself in the app (daily check, plus an automatic update and retry when a site breaks).
 - Light/dark theme, colours from the app icon or your wallpaper, compact bars.
@@ -82,12 +85,12 @@ app/src/main/java/com/kwan/multidownloader/
 ├── share/    Share receiver, share intents, sharing shortcuts
 ├── domain/   Link parsing (UrlParser), models, size estimates
 ├── engine/   DownloadEngine + YtDlpEngine, yt-dlp options, error mapping, yt-dlp updates
-├── data/     Room database, DataStore settings, cookies, MediaStore saving
+├── data/     Room database, DataStore settings, cookies, MediaStore saving, audio clips
 ├── work/     DownloadWorker, scheduling, notifications
 └── di/       Koin modules
 ```
 
-Built with Jetpack Compose and Material 3, Koin, Room, DataStore, WorkManager, Coil and kotlinx.serialization.
+Built with Jetpack Compose and Material 3, Koin, Room, DataStore, WorkManager, Media3 (ExoPlayer and Transformer, for clip preview and export), Coil and kotlinx.serialization.
 
 ### 16 KB page-size devices
 
