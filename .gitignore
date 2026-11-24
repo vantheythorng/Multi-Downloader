@@ -20,6 +20,8 @@ local.properties
 # Personal Android Studio state (device list sorting, last-selected run target)
 /.idea/deviceManager.xml
 /.idea/deploymentTargetSelector.xml
+# Names the JDK installed on this machine (corretto-21, ms-21, ...)
+/.idea/misc.xml
 
 # Built apps never belong in the repo
 *.apk
