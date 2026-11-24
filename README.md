@@ -1,6 +1,6 @@
 # Multi-Downloader
 
-An Android app that downloads audio (MP3) and video (MP4) from YouTube, YouTube Music, Facebook, TikTok and X, entirely on your phone. It embeds [yt-dlp](https://github.com/yt-dlp/yt-dlp), Python and FFmpeg through [youtubedl-android](https://github.com/yausername/youtubedl-android); there is no server.
+An Android app that downloads audio (MP3) and video (MP4) from YouTube, YouTube Music, Facebook, TikTok, X, Instagram and Pinterest, entirely on your phone. It embeds [yt-dlp](https://github.com/yt-dlp/yt-dlp), Python and FFmpeg through [youtubedl-android](https://github.com/yausername/youtubedl-android); there is no server.
 
 Share a link from any app, pick MP3 or video, and the file lands in your Music or Movies folder.
 
@@ -13,7 +13,6 @@ Share a link from any app, pick MP3 or video, and the file lands in your Music o
 - **Background downloads** with progress notifications, pause/resume, retry, and a limit of 1–3 at once. Optional Wi-Fi only.
 - **Share files** you downloaded (one or several at once), or **share the original link**.
 - **Keeps working when sites change**: yt-dlp updates itself in the app (daily check, plus an automatic update and retry when a site breaks).
-- **Login-only posts** via per-platform `cookies.txt` import. Cookies stay on the phone and are excluded from backups.
 - Light/dark theme, colours from the app icon or your wallpaper, compact bars.
 - **Private**: no account, no ads, no tracking. The app only talks to the sites you download from and to GitHub to update yt-dlp.
 
@@ -24,26 +23,28 @@ Share a link from any app, pick MP3 or video, and the file lands in your Music o
 | Facebook | `/videos/`, `/reel/`, `/watch`, `/share/v/`, `fb.watch` |
 | TikTok | `/@user/video/`, `vm.tiktok.com`, `vt.tiktok.com`, `/t/` |
 | X | `x.com/…/status/`, `twitter.com/…/status/` |
+| Instagram | `/reel/`, `/reels/`, `/p/`, `/tv/` (video posts and reels) |
+| Pinterest | `/pin/` on pinterest.com and its country sites, `pin.it` (video pins) |
 
-Other sites are passed to yt-dlp too, flagged as "may fail". TikTok photo posts download as their sound only (MP3).
+Other sites are passed to yt-dlp too, flagged as "may fail". TikTok photo posts download as their sound only (MP3). Instagram photo posts and Pinterest image pins aren't supported. Instagram sometimes refuses downloads without a login, which the app can't provide.
 
 ## Install
 
-Requires **Android 10 or newer** (arm64-v8a, armeabi-v7a or x86_64).
+Requires **Android 10 or newer** on a 64-bit ARM phone (arm64-v8a), which covers practically every phone from the last several years.
 
-Download the APK for your phone's ABI from [Releases](https://github.com/vantheythorng/Multi-Downloader/releases) (most phones: `arm64-v8a`). The app is not on Google Play, whose policy doesn't allow YouTube downloaders.
+Download the APK from [Releases](https://github.com/vantheythorng/Multi-Downloader/releases). The app is not on Google Play, whose policy doesn't allow YouTube downloaders.
 
 ## Build
 
 Requirements: Android Studio with JDK 21, Android SDK platform 37. Gradle 9.4.1 and AGP 9.2.1 come with the wrapper.
 
 ```sh
-./gradlew :app:assembleDebug        # app/build/outputs/apk/debug/app-<abi>-debug.apk
+./gradlew :app:assembleDebug        # app/build/outputs/apk/debug/Multi-Downloader_dev_<versionName>_<versionCode>.apk
 ./gradlew :app:testDebugUnitTest    # unit tests
 ./gradlew :app:lintDebug
 ```
 
-Builds are split per ABI, so each APK carries a single copy of the native Python and FFmpeg.
+Builds target arm64-v8a only, so the APK carries a single copy of the native Python and FFmpeg. APKs are named `Multi-Downloader_<dev|pro>_<versionName>_<versionCode>.apk` (debug = `dev`, release = `pro`); the version comes from `gradle/libs.versions.toml`.
 
 ### Release signing
 
@@ -64,7 +65,7 @@ keyPassword=…
 
 ```sh
 ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest
-adb install -r app/build/outputs/apk/debug/app-arm64-v8a-debug.apk
+adb install -r app/build/outputs/apk/debug/Multi-Downloader_dev_*.apk
 adb install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 adb shell am instrument -w com.kwan.multidownloader.test/androidx.test.runner.AndroidJUnitRunner
 adb uninstall com.kwan.multidownloader.test
@@ -109,6 +110,9 @@ It builds on these open-source projects, also listed in the app under **Settings
 | aria2 | GPL-2.0 |
 | QuickJS | MIT |
 | AndroidX, Kotlin, Koin, Coil, OkHttp, Jackson, Apache Commons | Apache-2.0 |
+| Simple Icons (platform logos) | CC0-1.0 |
+
+The platform logos are trademarks of their owners and are shown only to label which site a link is from; Multi-Downloader isn't affiliated with or endorsed by any of them.
 
 youtubedl-android is GPL-3.0, which is why the app is GPL-3.0 too: anyone distributing it must also make its source available under the same licence.
 

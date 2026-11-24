@@ -1,1 +1,4 @@
 /build
+# Android Studio "Generate Signed APK/Bundle" output: debug (dev) and release (pro)
+/debug/
+/release/
