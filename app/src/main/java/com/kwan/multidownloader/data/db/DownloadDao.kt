@@ -33,6 +33,9 @@ interface DownloadDao {
     )
     suspend fun updateMetadata(id: String, title: String, uploader: String?, thumbnailUrl: String?, durationSec: Int?)
 
+    @Query("UPDATE downloads SET title = :title WHERE id = :id")
+    suspend fun updateTitle(id: String, title: String)
+
     @Query("SELECT COUNT(*) FROM downloads WHERE status IN (:statuses)")
     suspend fun countByStatuses(statuses: Collection<Status>): Int
 

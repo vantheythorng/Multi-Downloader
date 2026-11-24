@@ -203,6 +203,12 @@ private fun SharingSection(settings: Settings, viewModel: SettingsViewModel) {
         onSelect = { type -> viewModel.update { it.copy(quickDownload = type) } },
     )
     Hint(stringResource(R.string.settings_quick_hint))
+    SwitchRow(
+        title = stringResource(R.string.settings_suggest_copied_links),
+        summary = stringResource(R.string.settings_suggest_copied_links_summary),
+        checked = settings.suggestCopiedLinks,
+        onCheckedChange = { on -> viewModel.update { it.copy(suggestCopiedLinks = on) } },
+    )
 }
 
 @Composable

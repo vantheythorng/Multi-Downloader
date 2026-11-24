@@ -41,6 +41,8 @@ data class HomeUiState(
     val link: ParsedLink? = null,
     val fetch: FetchState = FetchState.Empty,
     val showSheet: Boolean = false,
+    /** The supported link on the clipboard, suggested under the empty URL field while it has focus; null after dismissing. */
+    val clipboardLink: ParsedLink? = null,
 ) {
     val platform: Platform? get() = link?.platform
 }
@@ -52,7 +54,7 @@ sealed interface HomeEvent {
 class HomeViewModel(
     private val fetcher: MediaInfoFetcher,
     private val repository: DownloadRepository,
-    settingsRepository: SettingsRepository,
+    private val settingsRepository: SettingsRepository,
 ) : ViewModel() {
     private val _state = MutableStateFlow(HomeUiState())
     val state: StateFlow<HomeUiState> = _state.asStateFlow()
@@ -66,14 +68,38 @@ class HomeViewModel(
     private var fetchJob: Job? = null
     private var warmedUp = false
 
+    /** Timestamp of the last clip looked at, so a clip's text is read only once (Android 12+ shows a toast per read). */
+    var seenClipStamp = 0L
+        private set
+
     fun onUrlChange(text: String) {
         _state.update { it.copy(url = text, link = UrlParser.parse(text)) }
         warmUp()
     }
 
+    /** Whether to look at the clipboard now: the setting is on and the field is empty, so a suggestion could show. */
+    suspend fun wantsClipboard(): Boolean =
+        _state.value.url.isBlank() && settingsRepository.current().suggestCopiedLinks
+
+    /** A new clip replaces the suggestion, and clears it when the clip holds no supported link. */
+    fun onClipboardText(text: String, stamp: Long) {
+        seenClipStamp = stamp
+        _state.update { it.copy(clipboardLink = ClipboardLinks.offer(text)) }
+    }
+
+    fun useClipboardLink() {
+        val link = _state.value.clipboardLink ?: return
+        onUrlChange(link.url)
+        fetch()
+    }
+
+    /** Hides the suggestion until something new is copied. */
+    fun dismissClipboardLink() = _state.update { it.copy(clipboardLink = null) }
+
+    /** Keeps the copied-link suggestion: the clip was already read, so it couldn't come back otherwise. */
     fun clear() {
         fetchJob?.cancel()
-        _state.value = HomeUiState()
+        _state.value = HomeUiState(clipboardLink = _state.value.clipboardLink)
     }
 
     fun fetch() {

@@ -22,6 +22,8 @@
     <string name="settings_quick_ask">Ask every time (show the format sheet)</string>
     <string name="settings_quick_mp3">Always download as MP3</string>
     <string name="settings_quick_video">Always download as video</string>
+    <string name="settings_suggest_copied_links">Suggest copied links</string>
+    <string name="settings_suggest_copied_links_summary">Shows a supported link from your clipboard when you tap the link field</string>
     <string name="settings_downloads">Downloads</string>
     <string name="settings_default_format">Default format</string>
     <string name="settings_video_quality">Default video quality</string>
@@ -40,7 +42,7 @@
     <string name="settings_embed_thumbnail_hint">Adds the thumbnail as album art to MP3s</string>
     <string name="settings_embed_metadata">Embed title and artist</string>
     <string name="settings_embed_metadata_hint">Writes tags so music apps show the right name</string>
-    <string name="settings_aria2c">Faster downloads (aria2c)</string>
+    <string name="settings_aria2c">Faster downloads</string>
     <string name="settings_aria2c_hint">Uses several connections per file. Turn off if downloads fail.</string>
 
     <string name="settings_cookies">Login cookies</string>
@@ -62,7 +64,7 @@
     <string name="settings_cookies_unreadable">Couldn\'t read that file</string>
     <string name="settings_cookies_removed">Cookies removed</string>
 
-    <string name="settings_ytdlp">Downloader (yt-dlp)</string>
+    <string name="settings_ytdlp">Downloader</string>
     <string name="settings_ytdlp_update_now">Update now</string>
     <string name="settings_ytdlp_version">Version: %1$s</string>
     <string name="settings_ytdlp_bundled">the one bundled with the app</string>
@@ -156,6 +158,8 @@
     <string name="home_unsupported_warning">Unsupported site, the download may fail</string>
     <string name="home_no_link">No link found in that text</string>
     <string name="home_show_formats">Choose format</string>
+    <string name="home_clipboard_title">Link you copied</string>
+    <string name="home_clipboard_dismiss">Dismiss copied link</string>
     <string name="added_to_queue">Added to queue</string>
     <string name="retry">Retry</string>
 
@@ -194,6 +198,11 @@
     <string name="empty_failed">No failed downloads</string>
     <string name="filter_all">All</string>
     <string name="empty_filtered">No downloads of this file type here</string>
+    <string name="empty_search">No downloads match your search</string>
+    <string name="search_downloads">Search downloads</string>
+    <string name="search_clear">Clear search</string>
+    <string name="filter_type">File type: %1$s</string>
+    <string name="row_options">Options for %1$s</string>
     <string name="action_pause">Pause</string>
     <string name="action_resume">Resume</string>
     <string name="action_cancel">Cancel</string>
@@ -202,6 +211,23 @@
     <string name="action_share">Share</string>
     <string name="action_share_link">Share link</string>
     <string name="action_delete">Delete</string>
+    <string name="action_rename">Rename</string>
+    <string name="action_clip">Clip audio</string>
+    <string name="clip_title">Clip audio</string>
+    <string name="clip_length">%1$s clip</string>
+    <string name="clip_preview">Preview</string>
+    <string name="clip_stop">Stop</string>
+    <string name="clip_send">Send</string>
+    <string name="clip_making">Making the clip…</string>
+    <string name="clip_failed">Couldn\'t make the clip</string>
+    <string name="rename_title">Rename file</string>
+    <string name="rename_label">File name</string>
+    <string name="rename_save">Save</string>
+    <string name="rename_error_invalid">Enter a name</string>
+    <string name="rename_error_exists">A file with this name already exists</string>
+    <string name="rename_error_missing">The file is no longer there</string>
+    <string name="rename_error_not_allowed">This file can\'t be renamed from the app</string>
+    <string name="rename_error_failed">Couldn\'t rename the file</string>
     <string name="no_app_to_open">No app can open this file</string>
 
     <!-- Statuses -->

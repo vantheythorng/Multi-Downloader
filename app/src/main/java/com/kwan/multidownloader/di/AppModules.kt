@@ -1,6 +1,7 @@
 package com.kwan.multidownloader.di
 
 import androidx.room.Room
+import com.kwan.multidownloader.data.AudioClipper
 import com.kwan.multidownloader.data.DownloadPaths
 import com.kwan.multidownloader.data.DownloadRepository
 import com.kwan.multidownloader.data.MediaStoreSaver
@@ -44,6 +45,7 @@ val dataModule = module {
     singleOf(::DownloadPaths)
     singleOf(::CookieStore)
     singleOf(::DownloadRepository)
+    singleOf(::AudioClipper)
 }
 
 val engineModule = module {

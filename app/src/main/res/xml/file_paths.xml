@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Files the app shares through its FileProvider: only audio clips, which are never saved (AudioClipper.DIR). -->
+<paths>
+    <cache-path name="clips" path="clips/" />
+</paths>

@@ -4,6 +4,28 @@ Spec: https://claude.ai/artifact/JxGqX7zoGuVu1VWU1jNfxu
 
 ## Active
 
+### M5 - App v2
+- [ ] **Clipboard detection** - tapping the empty link field on Home suggests a supported copied link under it ("Link you copied"); tap fills the field and fetches
+    - Done in code: reads only while the field and window have focus, checks the clip description first (Android 12+ "pasted" toast), reads each clip's text once; ✕ hides it until something new is copied; Settings → Sharing → "Suggest copied links" (on by default)
+    - Galaxy S10+, Android 12: suggestion shows on focus, tap fills and fetches, it comes back after Clear
+    - Not tested yet: the single "pasted" toast, a link copied in another app while the field kept focus
+- [ ] **Splash screen** - launcher icon on the icon's dark grey (core-splashscreen 1.2.0, so Android 10-11 get it too); held until settings load, so the theme and first-run notice are right on the first frame
+    - Galaxy S10+, Android 12: the icon zooms out of its drawer tile, then Home; launches from adb or the drawer's search show the background only (Android 12 shows the icon for launcher launches only)
+    - Not tested yet: Android 10-11, where the library draws it instead of the system
+- [ ] **Rename downloaded files** - Completed rows get a Rename (✎) action; a dialog edits the file name, keeps the extension, and the row shows the new name
+    - Done in code: renames the app's own MediaStore entry (`DISPLAY_NAME`), cleans illegal characters, and catches a name already in the folder, a file deleted outside the app, and files the app no longer owns (after a reinstall)
+    - Not tested on a device yet
+- [ ] **Downloads search and simpler rows** - the top bar is a search bar (Material 3 `AppBarWithSearch`); tapping it opens a full-screen search across every tab, and leaving it clears the search
+    - Rows: thumbnail (a music note or film icon when there's none), title, "Nov 20, 2026 · 276 kB · MP3"; tapping a finished row plays it; every action is in the row's ⋮ menu
+    - The All / MP3 / MP4 filter is a tinted circle beside the search field, as tall as it, naming the current choice; tapping it opens the menu
+    - Galaxy S10+, Android 12: search, filter menu, tap to play, row menu (finished rows) and selection mode work
+    - Not tested yet: the row menu on active, paused and failed downloads; the thumbnail, file type, date and filter circle on a device
+- [ ] **Clip audio** - a finished download's ⋮ → Clip audio: pick a range, Preview it, Send shares an AAC .m4a clip without saving it (Media3 1.11.1 Transformer; Android has no MP3 encoder)
+    - Done in code: the clip goes to cache/clips (only the newest is kept, old ones cleared on start) and out through a FileProvider, named like the saved file ("Song.mp3" → "Song.m4a"); MP4s lose the picture; closing the sheet cancels the export
+    - Galaxy S10+, Android 12, MP3 source: range, Preview stopping at the end, Send → share sheet, 11 s clip = 188 KB AAC 131 kbps, nothing new in Music / Movies / Download
+    - Not tested yet: the clip's name on a device, an MP4 source, cancelling mid-export, a receiving app (WhatsApp, Telegram)
+- Preview player dropped (2026-10-30): Downloads' Open hands the file to the user's own player
+
 ### M4 - Polish & release (1 week)
 - [ ] **Device matrix** - Android 10, 13, 14+; arm64 + armeabi-v7a (minSdk 29, so Android 10 is the floor)
     - Pixel 3, Android 12, arm64 (4 KB pages): everything works
@@ -22,8 +44,6 @@ Spec: https://claude.ai/artifact/JxGqX7zoGuVu1VWU1jNfxu
 
 ## Someday
 - [ ] **Playlist download (P2)** - select all or some entries of YouTube / YT Music playlists
-- [ ] **Clipboard detection (P2)** - offer supported link on app open
-- [ ] **Preview player (P2)** - Media3 ExoPlayer
 - [ ] **F-Droid submission**
 
 ## Done
